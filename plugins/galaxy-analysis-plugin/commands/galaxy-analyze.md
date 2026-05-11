@@ -18,8 +18,9 @@ When this slash command is invoked:
 2. Read `../HARNESS.md`, this command file, and only the relevant guide/template files.
 3. Classify the task as a named validation profile when possible; otherwise use `general_galaxy_workflow`.
 4. Use `galaxy-cli` skills as the execution authority for live Galaxy work.
-5. If no Galaxy execution surface is available, stop after the analysis plan and state the missing capability.
-6. Return the Galaxy history link whenever a history can be resolved.
+5. Do not refuse a workflow only because no specialized validation profile exists; use `general_galaxy_workflow`.
+6. If `galaxy-cli` is unavailable or lacks a required operation, stop after the analysis plan or record the fallback reason.
+7. Return the Galaxy history link whenever a history can be resolved.
 
 ## Purpose
 
@@ -43,7 +44,7 @@ Analyze user-provided datasets in Galaxy using an inferred or user-provided goal
 
 ## Required Skill Use
 
-Use existing `galaxy-cli` skills or Galaxy execution tools for uploads, history inspection, tool submission, job tracking, and output retrieval. Do not implement Galaxy API calls directly in this command doc.
+Use `galaxy-cli` skills for uploads, history inspection, tool submission, job tracking, and output retrieval. Do not implement Galaxy API calls directly in this command doc. If a fallback is required, record the missing `galaxy-cli` capability and the fallback used.
 
 ## Output Expectations
 

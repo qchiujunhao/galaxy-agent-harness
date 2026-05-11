@@ -16,7 +16,7 @@ When this slash command is invoked:
 
 1. Treat `$ARGUMENTS` as an optional filter such as `commands`, `profiles`, `templates`, `packages`, `galaxy-cli`, or `bioartifact`.
 2. Read `../HARNESS.md`, this command file, and the relevant guide/template index files.
-3. Inspect local availability for `galaxy-cli` and `bioartifact` when the filter asks for capability status.
+3. Inspect local availability for `galaxy-cli` and `bioartifact` by default.
 4. Do not run live Galaxy jobs.
 5. Summarize the available slash commands and recommend the next command for the user's goal.
 
@@ -45,6 +45,8 @@ This command normally does not require Galaxy execution skills unless listing li
 - general Galaxy workflow support
 - specialized v1 validation profiles
 - available templates
+- local `galaxy-cli` availability
+- local `bioartifact` availability
 - local submission packages if requested
 
 ## Failure Handling

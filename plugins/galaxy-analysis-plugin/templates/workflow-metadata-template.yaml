@@ -14,6 +14,8 @@ galaxy_history_public: false
 galaxy_history_importable: false
 submitted_by: "{{submitted_by}}"
 submission_date: "{{submission_date}}"
+created: "{{created_date}}"
+updated: "{{updated_date}}"
 status: "{{status}}"
 review_status: "{{review_status}}"
 validation_status: "{{validation_status}}"

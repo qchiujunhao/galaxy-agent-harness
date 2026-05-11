@@ -20,7 +20,8 @@ When this slash command is invoked:
 4. Use `galaxy-cli` skills for Galaxy history inspection, workflow export, artifact retrieval, and public/importable checks.
 5. Generate a local draft package when artifacts are incomplete but useful to review.
 6. Create a pull request only when explicitly requested and supported.
-7. Return the Galaxy history link whenever a history can be resolved.
+7. If `galaxy-cli` is unavailable or lacks a required operation, record the fallback reason.
+8. Return the Galaxy history link whenever a history can be resolved.
 
 ## Purpose
 
@@ -48,7 +49,7 @@ For publishing a reproduced Galaxy history/workflow entry to the static workflow
 
 ## Required Skill Use
 
-Use `galaxy-cli` skills for workflow export and Galaxy artifact retrieval. Use GitHub tooling only for PR creation and only after the package passes readiness checks or the user accepts draft status.
+Use `galaxy-cli` skills for workflow export and Galaxy artifact retrieval. Use GitHub tooling only for PR creation and only after the package passes readiness checks or the user accepts draft status. If a fallback is required, record the missing `galaxy-cli` capability and fallback used.
 
 ## Output Expectations
 

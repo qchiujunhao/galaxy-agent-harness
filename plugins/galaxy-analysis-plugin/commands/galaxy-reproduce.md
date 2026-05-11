@@ -20,8 +20,9 @@ When this slash command is invoked:
 4. Use a named validation profile when one fits; otherwise use `general_galaxy_workflow`.
 5. Create a fresh Galaxy history before executing Galaxy tools.
 6. Use `galaxy-cli` skills as the execution authority for uploads, collections, tool runs, job tracking, and output retrieval.
-7. If no Galaxy execution surface is available, stop after the reproduction plan and state the missing capability.
-8. Return the Galaxy history link whenever a history can be resolved, including failed or partial runs.
+7. Do not refuse a workflow only because no specialized validation profile exists.
+8. If `galaxy-cli` is unavailable or lacks a required operation, stop after the reproduction plan or record the fallback reason.
+9. Return the Galaxy history link whenever a history can be resolved, including failed or partial runs.
 
 ## Purpose
 
@@ -63,4 +64,4 @@ Validation must cover both Galaxy completion and fidelity to the source workflow
 
 ## Failure Handling
 
-If the source lacks required inputs, versions, or parameters, mark the reproduction as draft and state what is missing. If a Galaxy mapping is unavailable, propose the closest supported mapping and identify the scientific impact.
+If the source lacks required inputs, versions, or parameters, mark the reproduction as draft and state what is missing. If a specialized profile is unavailable, proceed through `general_galaxy_workflow`. If a Galaxy mapping is unavailable, propose the closest supported mapping and identify the scientific impact.

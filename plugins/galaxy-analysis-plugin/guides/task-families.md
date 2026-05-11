@@ -4,6 +4,8 @@ The plugin supports general Galaxy workflows. The named families below are valid
 
 If a request does not fit a named profile, classify it as `general_galaxy_workflow` and use the generic workflow path.
 
+Do not refuse an analysis only because it is outside the named profiles. Named profiles add stronger defaults and validation checks; they are not support limits.
+
 ## General Galaxy Workflow
 
 Typical inputs:
@@ -31,6 +33,8 @@ Validation focus:
 - task-specific claims are limited when no specialized profile applies
 
 Use this class for any workflow outside the specialized profiles below.
+
+When reporting generic validation, state which checks are generic structural checks and which specialized scientific checks were not available.
 
 ## Short-Read QC and Trimming
 

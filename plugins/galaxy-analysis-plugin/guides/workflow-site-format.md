@@ -76,4 +76,25 @@ Do not require an image to publish a history-first entry.
 - write or update `workflows/<entry_id>/metadata.yaml`
 - write or update a human-readable `README.md`
 - regenerate static index data under `site/`
+- regenerate static HTML pages under `docs/`
 - optionally create a PR when requested
+
+Use the bundled generator:
+
+```bash
+python3 plugins/galaxy-analysis-plugin/scripts/generate_workflow_site.py
+```
+
+The generator reads `workflows/*/metadata.yaml`, writes machine-readable data to `site/`, and writes GitHub Pages-compatible static HTML to `docs/`.
+
+Generated outputs:
+
+- `site/index.json`
+- `site/tags.json`
+- `site/validation_profiles.json`
+- `site/build_report.json`
+- `docs/index.html`
+- `docs/styles.css`
+- `docs/workflows/<slug>/index.html` for each entry
+
+The generator supports history-first entries. A missing `workflow.ga`, `workflow.svg`, or `thumbnail.png` should produce a warning or missing download, not block site generation.

@@ -18,7 +18,8 @@ When this slash command is invoked:
 2. Read `../HARNESS.md`, this command file, and only the relevant result interpretation or validation guides.
 3. Use `galaxy-cli` skills for live Galaxy history, job, and dataset inspection.
 4. Distinguish direct evidence from inference when explaining failures.
-5. Return the Galaxy history link whenever a history can be resolved.
+5. If `galaxy-cli` is unavailable or lacks a required inspection operation, record the fallback reason.
+6. Return the Galaxy history link whenever a history can be resolved.
 
 ## Purpose
 
@@ -42,7 +43,7 @@ Explain Galaxy histories, outputs, jobs, or failures.
 
 ## Required Skill Use
 
-Use `galaxy-cli` skills for history, job, and dataset inspection. For local output files, inspect the file structure directly when available.
+Use `galaxy-cli` skills for history, job, and dataset inspection. For local output files, inspect the file structure directly when available. If a fallback is required, record the missing `galaxy-cli` capability and fallback used.
 
 ## Output Expectations
 

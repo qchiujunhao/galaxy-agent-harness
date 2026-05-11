@@ -6,7 +6,7 @@ Galaxy Analysis Plugin is best implemented as a thin host integration that injec
 
 - host layer: plugin manifest, skill discovery, slash-command files, command routing, context injection
 - method layer: `HARNESS.md`, command contracts, guides, templates
-- execution layer: existing `galaxy-cli` skills or equivalent Galaxy execution tools
+- execution layer: existing `galaxy-cli` skills, with documented fallbacks only when needed
 - target: Galaxy histories, tools, datasets, workflows, and exports
 
 ## Why This Is a Good Shape

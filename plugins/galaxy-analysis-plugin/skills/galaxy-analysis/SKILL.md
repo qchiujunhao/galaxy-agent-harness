@@ -31,7 +31,8 @@ For every task:
 - Use the harness phase model: inspect, infer, plan, execute, validate, summarize.
 - Classify the task family before choosing Galaxy tools.
 - Make assumptions explicit.
-- Use existing `galaxy-cli` skills or available Galaxy execution tools for real Galaxy operations.
+- Use existing `galaxy-cli` skills for real Galaxy operations.
+- Use fallback Galaxy execution tools only when `galaxy-cli` is unavailable or lacks the required capability, and record the fallback reason.
 - If no Galaxy execution capability is available, stop at the planning or explanation boundary and clearly state what capability is missing.
 - Validate real outputs. Do not mark success from a plausible plan alone.
 - Keep host-specific behavior thin; workflow methodology belongs in the shared docs.

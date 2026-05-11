@@ -19,7 +19,8 @@ When this slash command is invoked:
 3. Use `galaxy-cli` skills when validation depends on live Galaxy state.
 4. Use local filesystem inspection for downloaded outputs and submission packages.
 5. Apply generic structural validation when no named profile fits, and mark profile-specific validation as draft.
-6. Return the Galaxy history link whenever a history can be resolved.
+6. If `galaxy-cli` is unavailable or lacks a required operation, record the fallback reason.
+7. Return the Galaxy history link whenever a history can be resolved.
 
 ## Purpose
 
@@ -42,7 +43,7 @@ Validate a completed Galaxy run, output set, or workflow submission package with
 
 ## Required Skill Use
 
-Use `galaxy-cli` skills when validation depends on Galaxy state. Use filesystem inspection for local packages. Do not mark validation as pass without inspecting real artifacts.
+Use `galaxy-cli` skills when validation depends on Galaxy state. Use filesystem inspection for local packages. Do not mark validation as pass without inspecting real artifacts. If a fallback is required, record the missing `galaxy-cli` capability and fallback used.
 
 ## Output Expectations
 

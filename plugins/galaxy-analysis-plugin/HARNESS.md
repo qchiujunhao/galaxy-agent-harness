@@ -11,7 +11,7 @@ The plugin is a thin host integration layer. It should mainly:
 - assemble user input and relevant context
 - inject the resulting instruction set into the host agent session
 
-Actual Galaxy work is performed by the host agent using existing `galaxy-cli` skills or equivalent Galaxy execution tools.
+Actual Galaxy work is performed by the host agent using existing `galaxy-cli` skills. Other Galaxy execution tools are fallbacks only when `galaxy-cli` is unavailable or lacks a required capability, and the fallback reason must be recorded.
 
 ## 2. Core Operating Model
 
@@ -27,6 +27,7 @@ This means:
 - do not reimplement Galaxy execution logic in the plugin host code
 - do not create a second backend parallel to `galaxy-cli`
 - do not bypass `galaxy-cli` skills for routine Galaxy operations when those skills support the task
+- record the execution surface and any fallback reason in plans, reports, validation summaries, and website metadata
 - keep host-specific runtime logic minimal and portable
 
 ## 3. Primary Modes
@@ -51,6 +52,8 @@ The plugin should not:
 - duplicate Galaxy execution logic in host code
 - invent a second command surface for operations that `galaxy-cli` skills already provide
 - scatter ad hoc Galaxy behavior across command docs without anchoring it to skill usage
+
+Fallback Galaxy tooling may be used only when `galaxy-cli` is missing, misconfigured, or lacks the required operation. The final report must state the attempted `galaxy-cli` capability, the fallback used, and the reproducibility impact.
 
 ### 4.2 Prefer Phased Execution Over One-Shot Improvisation
 
@@ -155,7 +158,7 @@ Produce a concise execution plan that includes:
 
 ### Phase 4: Execute
 
-Run the plan through `galaxy-cli` skills or the available Galaxy execution surface. If no execution surface is available, report the missing capability instead of simulating success.
+Run the plan through `galaxy-cli` skills. If `galaxy-cli` is unavailable or missing a required operation, either stop at the planning boundary or use a fallback execution surface with an explicit fallback reason. If no execution surface is available, report the missing capability instead of simulating success.
 
 ### Phase 5: Validate
 
@@ -172,6 +175,7 @@ Return:
 - what was done
 - what was produced
 - Galaxy history link, or `unavailable` with reason
+- execution surface and fallback reason, if any
 - whether validation passed
 - remaining warnings or next actions
 
@@ -318,6 +322,7 @@ Each command file under `commands/*.md` is both a Codex plugin slash-command pro
 - accepted inputs and invocation styles
 - phase-by-phase workflow
 - required use of `galaxy-cli` skills
+- fallback policy when `galaxy-cli` cannot perform the operation
 - output expectations
 - validation expectations
 - failure handling rules

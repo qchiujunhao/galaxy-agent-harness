@@ -23,8 +23,10 @@ REQUIRED_FILES = [
     "guides/task-families.md",
     "guides/validation.md",
     "guides/result-interpretation.md",
+    "guides/galaxy-cli-execution.md",
     "guides/workflow-submission.md",
     "guides/workflow-site-format.md",
+    "scripts/generate_workflow_site.py",
     "templates/analysis-plan-template.md",
     "templates/reproduction-report-template.md",
     "templates/validation-report-template.md",
@@ -78,6 +80,10 @@ def main() -> int:
         for rel in ["../../HARNESS.md", "../../commands/", "../../guides/", "../../templates/"]:
             if rel not in text:
                 errors.append(f"skill does not reference {rel}")
+
+    site_generator = ROOT / "scripts/generate_workflow_site.py"
+    if site_generator.is_file() and not site_generator.stat().st_mode & 0o111:
+        errors.append("scripts/generate_workflow_site.py must be executable")
 
     if errors:
         for error in errors:

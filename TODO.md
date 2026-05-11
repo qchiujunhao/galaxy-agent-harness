@@ -7,6 +7,7 @@ Last updated: 2026-05-11
 - The Codex plugin package loads as `galaxy-analysis-plugin:galaxy-analysis`.
 - The shared method layer exists: `HARNESS.md`, slash-command docs, guides, templates, and a structure check.
 - All seven v1 `/galaxy-*` commands have plugin-level `commands/*.md` prompt files with frontmatter and `$ARGUMENTS` handling.
+- A static workflow-site generator now writes `site/*.json` and `docs/*.html` from `workflows/*/metadata.yaml`.
 - A live `/galaxy-reproduce` acceptance test ran DESeq2 on usegalaxy.org and passed.
 - Live test evidence is stored under ignored `local/plugin_tests/` directories and should not be published.
 - The live test used BioBlend directly, not `galaxy-cli`.
@@ -42,11 +43,11 @@ The plugin is v1-ready when all of the following are true:
 
 ## Phase 0: Clean Baseline
 
-- [ ] Keep only the root `README.md`; do not recreate a plugin-level README.
-- [ ] Keep test artifacts under `local/plugin_tests/`.
-- [ ] Keep generated caches, `__pycache__`, and credentials out of the repo.
-- [ ] Add or verify `.gitignore` entries for Python caches, local virtualenvs, Galaxy run outputs, and downloaded datasets.
-- [ ] Re-run:
+- [x] Keep only the root `README.md`; do not recreate a plugin-level README.
+- [x] Keep test artifacts under `local/plugin_tests/`.
+- [x] Keep generated caches, `__pycache__`, and credentials out of the repo.
+- [x] Add or verify `.gitignore` entries for Python caches, local virtualenvs, Galaxy run outputs, and downloaded datasets.
+- [x] Re-run:
 
 ```bash
 python3 -m json.tool .agents/plugins/marketplace.json >/dev/null
@@ -83,12 +84,12 @@ galaxy-cli config test
 /path/to/cli-galaxy/galaxy-src/agent-harness/galaxy_cli/skills/SKILL.md
 ```
 
-- [ ] Add a short repo guide, `plugins/galaxy-analysis-plugin/guides/galaxy-cli-execution.md`, with the exact command patterns this plugin expects.
-- [ ] Update `HARNESS.md` from "galaxy-cli or equivalent" to stricter behavior:
+- [x] Add a short repo guide, `plugins/galaxy-analysis-plugin/guides/galaxy-cli-execution.md`, with the exact command patterns this plugin expects.
+- [x] Update `HARNESS.md` from "galaxy-cli or equivalent" to stricter behavior:
   - use `galaxy-cli` for routine Galaxy actions
   - use fallback tools only when `galaxy-cli` lacks a required capability
   - record fallback reason in the report
-- [ ] Update command docs to make `galaxy-cli` the explicit execution path.
+- [x] Update command docs to make `galaxy-cli` the explicit execution path.
 
 Acceptance check:
 
@@ -186,7 +187,7 @@ padj
 local/plugin_tests/fair_cli_session/bioartifact_de_table.json
 ```
 
-- [ ] Update `plugins/galaxy-analysis-plugin/guides/validation.md` to say:
+- [x] Update `plugins/galaxy-analysis-plugin/guides/validation.md` to say:
   - use `bioartifact` for downloaded local artifacts
   - do not use it as the only validation layer
   - combine it with Galaxy job state and output metadata
@@ -200,20 +201,20 @@ Acceptance criteria:
 
 Goal: remove ambiguity from future runs.
 
-- [ ] README must clearly separate:
+- [x] README must clearly separate:
   - plugin installation
   - `galaxy-cli` installation
   - Galaxy credentials
   - `bioartifact` validation setup
   - live acceptance testing
-- [ ] README must say that histories are private unless the user asks to publish/import.
-- [ ] HARNESS must require the Galaxy history link for all Galaxy-backed runs.
-- [ ] HARNESS must not require public histories.
-- [ ] HARNESS must require reports to name the execution surface:
+- [x] README must say that histories are private unless the user asks to publish/import.
+- [x] HARNESS must require the Galaxy history link for all Galaxy-backed runs.
+- [x] HARNESS must not require public histories.
+- [x] HARNESS must require reports to name the execution surface:
   - `galaxy-cli`
   - fallback reason, if any
   - `bioartifact`, if used
-- [ ] Update `README.md` troubleshooting:
+- [x] Update `README.md` troubleshooting:
   - `galaxy-cli: command not found`
   - missing `click`
   - `GALAXY_URL` or `GALAXY_API_KEY` missing
@@ -226,9 +227,9 @@ Goal: make all v1 modes useful, not just documented.
 
 General workflow requirement:
 
-- [ ] Add a generic `general_galaxy_workflow` path to the task-family guide.
-- [ ] Make `/galaxy-reproduce` and `/galaxy-analyze` avoid refusing workflows only because no specialized profile exists.
-- [ ] Reports must distinguish generic structural validation from specialized task-family validation.
+- [x] Add a generic `general_galaxy_workflow` path to the task-family guide.
+- [x] Make `/galaxy-reproduce` and `/galaxy-analyze` avoid refusing workflows only because no specialized profile exists.
+- [x] Reports must distinguish generic structural validation from specialized task-family validation.
 - [ ] Add at least one acceptance test outside the current named profiles.
 
 ### Slash Command Files
@@ -246,8 +247,8 @@ General workflow requirement:
 ### `/galaxy-list`
 
 - [x] Command prompt exists.
-- [ ] Test in fresh Codex session.
-- [ ] Include general workflow support, named validation profiles, and whether `galaxy-cli` and `bioartifact` are available.
+- [x] Test in fresh Codex session.
+- [x] Include general workflow support, named validation profiles, and whether `galaxy-cli` and `bioartifact` are available.
 
 ### `/galaxy-reproduce`
 
@@ -339,11 +340,11 @@ The website should be history-first. A reproduced Galaxy history is enough to cr
 
 `/galaxy-upload-workflow` is the command that publishes a reproduced workflow/history to this website. `/galaxy-submit-workflow` can remain as an alias for package/PR-oriented submission, but the product-facing command should be `/galaxy-upload-workflow`.
 
-- [ ] Generate `site/index.json` from `workflows/*/metadata.yaml`.
-- [ ] Generate `site/tags.json`.
-- [ ] Generate `site/task_families.json` or `site/validation_profiles.json`.
-- [ ] Generate simple static pages under `docs/`.
-- [ ] Render workflow cards with:
+- [x] Generate `site/index.json` from `workflows/*/metadata.yaml`.
+- [x] Generate `site/tags.json`.
+- [x] Generate `site/task_families.json` or `site/validation_profiles.json`.
+- [x] Generate simple static pages under `docs/`.
+- [x] Render workflow cards with:
   - title
   - Galaxy history link
   - public/private/importable status
@@ -351,7 +352,7 @@ The website should be history-first. A reproduced Galaxy history is enough to cr
   - validation badge
   - source URL
   - thumbnail when available
-- [ ] Render workflow detail pages with:
+- [x] Render workflow detail pages with:
   - Galaxy history link as the primary action
   - public/private/importable status
   - full workflow image when available
@@ -365,7 +366,7 @@ The website should be history-first. A reproduced Galaxy history is enough to cr
   - create or update `workflows/<entry_id>/`
   - regenerate static site index data
   - optionally open a PR when requested
-- [ ] Define minimum website entry metadata:
+- [x] Define minimum website entry metadata:
   - id
   - title
   - slug
@@ -390,15 +391,15 @@ Goal: make regressions obvious.
 
 Tests to keep:
 
-- [ ] Structure check for plugin files.
-- [ ] Plugin load check in fresh Codex session.
+- [x] Structure check for plugin files.
+- [x] Plugin load check in fresh Codex session.
 - [ ] `galaxy-cli` availability check.
 - [ ] `bioartifact` availability check.
 - [ ] Offline docs consistency check.
 - [ ] Live `galaxy-cli` DESeq2 acceptance test.
 - [ ] Public-history toggle test only when explicitly requested.
 - [ ] Package generation test.
-- [ ] Registry generation test.
+- [x] Registry generation test.
 
 Evidence policy:
 
@@ -409,7 +410,7 @@ Evidence policy:
 
 ## Phase 9: Design Completion Estimate
 
-Current completion against the original `design.md`: about 50-55%.
+Current completion against the original `design.md`: about 65%.
 
 Target completion after Phase 3: about 65%.
 
@@ -425,6 +426,6 @@ The last 10% is polish, broader task-family coverage, deeper validation, and hos
 2. Re-run the `Intro-to-DGE` acceptance test using only `galaxy-cli`.
 3. Download the DESeq2 result table and test `bioartifact` against it.
 4. Decide whether to normalize Galaxy DE tables in this repo or add alias support to `bioartifact`.
-5. Update `HARNESS.md` and README to make `galaxy-cli` canonical.
+5. Implement `/galaxy-upload-workflow` draft entry creation from a completed history.
 6. Add a generic workflow acceptance test outside the current named profiles.
 7. Add a fresh acceptance report under `local/plugin_tests/fair_cli_session/`.

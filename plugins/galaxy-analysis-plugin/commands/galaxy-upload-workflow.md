@@ -19,8 +19,9 @@ When this slash command is invoked:
 3. Use `galaxy-cli` skills for Galaxy history inspection, workflow export, artifact retrieval, and public/importable checks.
 4. Do not make a Galaxy history public unless the user explicitly asks.
 5. Create or update a local website entry under `workflows/<entry_id>/` when enough metadata is available.
-6. Regenerate static site data when the site generator exists; otherwise record the missing generator as a publication warning.
-7. Return the Galaxy history link whenever a history can be resolved.
+6. Regenerate static site data with `plugins/galaxy-analysis-plugin/scripts/generate_workflow_site.py`.
+7. If `galaxy-cli` is unavailable or lacks a required operation, record the fallback reason.
+8. Return the Galaxy history link whenever a history can be resolved.
 
 ## Purpose
 
@@ -52,7 +53,7 @@ This command is the publication path for the simple IWC-like registry. The first
 
 Use `galaxy-cli` skills for Galaxy history inspection, workflow export, artifact retrieval, and public/importable toggles when the user explicitly asks to make a history public.
 
-Use local filesystem tools to generate static site metadata and pages. Use GitHub tooling only for PR creation after the entry passes validation or the user accepts draft status.
+Use `plugins/galaxy-analysis-plugin/scripts/generate_workflow_site.py` to generate static site metadata and pages. Use GitHub tooling only for PR creation after the entry passes validation or the user accepts draft status.
 
 ## Output Expectations
 
