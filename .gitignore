@@ -1,0 +1,23 @@
+__pycache__/
+*.py[cod]
+.DS_Store
+.env
+.env.*
+.venv/
+venv/
+dist/
+build/
+
+# Local execution traces and generated test artifacts.
+local/
+run_records/
+condition_summaries/
+
+# Galaxy/Codex local state and logs.
+.galaxy-cli/
+*.log
+codex_exec_*.txt
+history_link.txt
+run_summary.json
+job_detail.json
+public_history_status.json

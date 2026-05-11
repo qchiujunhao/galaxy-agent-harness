@@ -1,0 +1,33 @@
+{
+  "name": "galaxy-analysis-plugin",
+  "version": "0.1.0",
+  "description": "A thin Codex plugin that guides Galaxy analyses through shared methodology and existing Galaxy execution skills.",
+  "author": {
+    "name": "Galaxy Analysis Plugin Maintainers"
+  },
+  "license": "MIT",
+  "keywords": [
+    "galaxy",
+    "bioinformatics",
+    "workflow-reproduction",
+    "analysis-validation"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Galaxy Analysis",
+    "shortDescription": "Plan, run, explain, validate, and package Galaxy analyses.",
+    "longDescription": "Provides a shared Galaxy analysis harness for coding agents. The plugin keeps host code thin, loads command-specific methodology, and delegates real Galaxy operations to existing galaxy-cli skills.",
+    "developerName": "Galaxy Analysis Plugin Maintainers",
+    "category": "Science",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "defaultPrompt": [
+      "Analyze these datasets in Galaxy.",
+      "Reproduce this workflow in Galaxy.",
+      "Explain this Galaxy history failure."
+    ],
+    "brandColor": "#3B82F6"
+  }
+}

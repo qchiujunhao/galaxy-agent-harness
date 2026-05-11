@@ -1,0 +1,29 @@
+id: "{{id}}"
+title: "{{title}}"
+slug: "{{slug}}"
+task_family: "{{task_family}}"
+workflow_class: "{{workflow_class}}"
+validation_profile: "{{validation_profile}}"
+source_type: "{{source_type}}"
+source_ref: "{{source_ref}}"
+source_url: "{{source_url}}"
+galaxy_instance: "{{galaxy_instance}}"
+galaxy_history_url: "{{galaxy_history_url}}"
+galaxy_history_id: "{{galaxy_history_id}}"
+galaxy_history_public: false
+galaxy_history_importable: false
+submitted_by: "{{submitted_by}}"
+submission_date: "{{submission_date}}"
+status: "{{status}}"
+review_status: "{{review_status}}"
+validation_status: "{{validation_status}}"
+execution_surface: "galaxy-cli"
+workflow_file: null
+workflow_image: null
+thumbnail_image: null
+readme_file: "README.md"
+validation_file: "validation_report.json"
+provenance_file: "provenance.json"
+tags:
+  - "{{tag}}"
+summary: "{{summary}}"

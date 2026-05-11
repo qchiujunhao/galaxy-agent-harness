@@ -1,0 +1,20 @@
+{
+  "name": "galaxy-agent-harness",
+  "interface": {
+    "displayName": "Galaxy Agent Harness"
+  },
+  "plugins": [
+    {
+      "name": "galaxy-analysis-plugin",
+      "source": {
+        "source": "local",
+        "path": "./plugins/galaxy-analysis-plugin"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Science"
+    }
+  ]
+}
