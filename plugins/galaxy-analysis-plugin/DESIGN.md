@@ -4,7 +4,7 @@ Galaxy Analysis Plugin is best implemented as a thin host integration that injec
 
 ## Architecture
 
-- host layer: plugin manifest, skill discovery, command routing, context injection
+- host layer: plugin manifest, skill discovery, slash-command files, command routing, context injection
 - method layer: `HARNESS.md`, command contracts, guides, templates
 - execution layer: existing `galaxy-cli` skills or equivalent Galaxy execution tools
 - target: Galaxy histories, tools, datasets, workflows, and exports
@@ -18,7 +18,7 @@ Galaxy Analysis Plugin is best implemented as a thin host integration that injec
 
 ## Main Risk
 
-The design should not overpromise host-native slash commands before the host supports them. The current v1 handles `/galaxy-*` strings through a Codex skill and command docs. A later host integration can register true commands while reusing the same method layer.
+Codex plugin-level slash-command discovery can vary by host build. The current v1 ships `commands/*.md` prompt files for every `/galaxy-*` mode, and keeps skill-based routing as the fallback path. Future host integrations should reuse the same method layer instead of duplicating command behavior.
 
 ## V1 Scope
 
@@ -45,7 +45,7 @@ The named profiles are not support limits. They add stronger defaults and valida
 ## Roadmap
 
 1. Stabilize the shared method layer.
-2. Add host-specific loaders only where the host supports them.
+2. Test and harden host-specific command loading where the host supports it.
 3. Add `/galaxy-upload-workflow` for publishing reproduced Galaxy history entries to the static site.
 4. Add package generation helpers for workflow submissions.
 5. Add GitHub Pages/static registry generation from `workflows/*/metadata.yaml`.

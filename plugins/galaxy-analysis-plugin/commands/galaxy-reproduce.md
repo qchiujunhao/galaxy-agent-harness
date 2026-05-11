@@ -1,4 +1,27 @@
+---
+description: Reproduce an external analysis source in Galaxy and report the resulting history, outputs, and validation status.
+argument-hint: [repository-methods-workflow-or-benchmark]
+allowed-tools: [Read, Glob, Grep, Bash, Write, Edit, WebFetch]
+---
+
 # `/galaxy-reproduce`
+
+## Arguments
+
+The user invoked this command with: $ARGUMENTS
+
+## Invocation Instructions
+
+When this slash command is invoked:
+
+1. Treat `$ARGUMENTS` as the source to reproduce and any user constraints.
+2. Read `../HARNESS.md`, this command file, and only the relevant task-family, validation, and template files.
+3. Inspect the source before planning Galaxy execution.
+4. Use a named validation profile when one fits; otherwise use `general_galaxy_workflow`.
+5. Create a fresh Galaxy history before executing Galaxy tools.
+6. Use `galaxy-cli` skills as the execution authority for uploads, collections, tool runs, job tracking, and output retrieval.
+7. If no Galaxy execution surface is available, stop after the reproduction plan and state the missing capability.
+8. Return the Galaxy history link whenever a history can be resolved, including failed or partial runs.
 
 ## Purpose
 

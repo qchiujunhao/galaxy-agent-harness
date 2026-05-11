@@ -1,4 +1,24 @@
+---
+description: Explain a Galaxy history, job, dataset, output, warning, or failure.
+argument-hint: [history-job-dataset-or-failure]
+allowed-tools: [Read, Glob, Grep, Bash, WebFetch]
+---
+
 # `/galaxy-explain`
+
+## Arguments
+
+The user invoked this command with: $ARGUMENTS
+
+## Invocation Instructions
+
+When this slash command is invoked:
+
+1. Treat `$ARGUMENTS` as the Galaxy object, output file, failure text, or explanation question.
+2. Read `../HARNESS.md`, this command file, and only the relevant result interpretation or validation guides.
+3. Use `galaxy-cli` skills for live Galaxy history, job, and dataset inspection.
+4. Distinguish direct evidence from inference when explaining failures.
+5. Return the Galaxy history link whenever a history can be resolved.
 
 ## Purpose
 

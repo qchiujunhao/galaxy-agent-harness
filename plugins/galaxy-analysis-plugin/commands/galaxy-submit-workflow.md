@@ -1,4 +1,26 @@
+---
+description: Package a reproduced Galaxy workflow or history for review, local submission, or an explicitly requested PR.
+argument-hint: [history-workflow-package-or-source]
+allowed-tools: [Read, Glob, Grep, Bash, Write, Edit, WebFetch]
+---
+
 # `/galaxy-submit-workflow`
+
+## Arguments
+
+The user invoked this command with: $ARGUMENTS
+
+## Invocation Instructions
+
+When this slash command is invoked:
+
+1. Treat `$ARGUMENTS` as the reproduced workflow/history target and desired submission mode.
+2. Read `../HARNESS.md`, this command file, `../guides/workflow-submission.md`, `../guides/validation.md`, and relevant templates.
+3. Prefer `/galaxy-upload-workflow` when the user wants website publication.
+4. Use `galaxy-cli` skills for Galaxy history inspection, workflow export, artifact retrieval, and public/importable checks.
+5. Generate a local draft package when artifacts are incomplete but useful to review.
+6. Create a pull request only when explicitly requested and supported.
+7. Return the Galaxy history link whenever a history can be resolved.
 
 ## Purpose
 

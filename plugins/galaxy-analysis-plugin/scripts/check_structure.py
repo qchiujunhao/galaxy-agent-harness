@@ -34,6 +34,11 @@ REQUIRED_FILES = [
 ]
 
 COMMAND_MARKERS = [
+    "---",
+    "description:",
+    "$ARGUMENTS",
+    "## Arguments",
+    "## Invocation Instructions",
     "## Purpose",
     "## Accepted Inputs",
     "## Phase Workflow",
@@ -51,8 +56,16 @@ def main() -> int:
         if not path.is_file():
             errors.append(f"missing required file: {rel}")
 
-    for path in sorted((ROOT / "commands").glob("*.md")):
+    command_files = [
+        path
+        for path in sorted((ROOT / "commands").glob("*.md"))
+        if not path.name.startswith("_")
+    ]
+
+    for path in command_files:
         text = path.read_text(encoding="utf-8")
+        if not text.startswith("---\n"):
+            errors.append(f"{path.relative_to(ROOT)} must start with YAML frontmatter")
         for marker in COMMAND_MARKERS:
             if marker not in text:
                 errors.append(f"{path.relative_to(ROOT)} missing marker: {marker}")

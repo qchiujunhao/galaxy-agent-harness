@@ -1,4 +1,24 @@
+---
+description: List Galaxy Analysis Plugin commands, workflow support, validation profiles, templates, and local capabilities.
+argument-hint: [optional-filter]
+allowed-tools: [Read, Glob, Grep, Bash]
+---
+
 # `/galaxy-list`
+
+## Arguments
+
+The user invoked this command with: $ARGUMENTS
+
+## Invocation Instructions
+
+When this slash command is invoked:
+
+1. Treat `$ARGUMENTS` as an optional filter such as `commands`, `profiles`, `templates`, `packages`, `galaxy-cli`, or `bioartifact`.
+2. Read `../HARNESS.md`, this command file, and the relevant guide/template index files.
+3. Inspect local availability for `galaxy-cli` and `bioartifact` when the filter asks for capability status.
+4. Do not run live Galaxy jobs.
+5. Summarize the available slash commands and recommend the next command for the user's goal.
 
 ## Purpose
 

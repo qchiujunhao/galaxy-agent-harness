@@ -12,7 +12,7 @@ This skill routes Galaxy analysis requests through the shared Galaxy Analysis Pl
 For every task:
 
 1. Read `../../HARNESS.md`.
-2. Select and read exactly one command contract from `../../commands/` unless the request spans multiple modes.
+2. Select and read exactly one command prompt/contract from `../../commands/` unless the request spans multiple modes.
 3. Read only the relevant guide files from `../../guides/`.
 4. Use templates from `../../templates/` when producing durable plans, reports, validation summaries, or workflow submission packages.
 

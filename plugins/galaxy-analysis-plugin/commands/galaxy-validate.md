@@ -1,4 +1,25 @@
+---
+description: Validate a completed Galaxy run, output set, or workflow package without rerunning the analysis.
+argument-hint: [history-output-package-or-task-family]
+allowed-tools: [Read, Glob, Grep, Bash, Write, Edit, WebFetch]
+---
+
 # `/galaxy-validate`
+
+## Arguments
+
+The user invoked this command with: $ARGUMENTS
+
+## Invocation Instructions
+
+When this slash command is invoked:
+
+1. Treat `$ARGUMENTS` as the validation target and any expected task family or profile.
+2. Read `../HARNESS.md`, this command file, `../guides/validation.md`, and relevant task-family or submission guides.
+3. Use `galaxy-cli` skills when validation depends on live Galaxy state.
+4. Use local filesystem inspection for downloaded outputs and submission packages.
+5. Apply generic structural validation when no named profile fits, and mark profile-specific validation as draft.
+6. Return the Galaxy history link whenever a history can be resolved.
 
 ## Purpose
 

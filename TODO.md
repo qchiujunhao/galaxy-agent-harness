@@ -5,7 +5,8 @@ Last updated: 2026-05-11
 ## Current Ground Truth
 
 - The Codex plugin package loads as `galaxy-analysis-plugin:galaxy-analysis`.
-- The shared method layer exists: `HARNESS.md`, command docs, guides, templates, and a structure check.
+- The shared method layer exists: `HARNESS.md`, slash-command docs, guides, templates, and a structure check.
+- All seven v1 `/galaxy-*` commands have plugin-level `commands/*.md` prompt files with frontmatter and `$ARGUMENTS` handling.
 - A live `/galaxy-reproduce` acceptance test ran DESeq2 on usegalaxy.org and passed.
 - Live test evidence is stored under ignored `local/plugin_tests/` directories and should not be published.
 - The live test used BioBlend directly, not `galaxy-cli`.
@@ -27,6 +28,7 @@ Use `bioartifact` as the deterministic local artifact-validation layer after Gal
 The plugin is v1-ready when all of the following are true:
 
 - A fresh Codex session can load the plugin without manual cache repair.
+- All seven v1 slash commands appear or route correctly in a fresh Codex session.
 - `/galaxy-list`, `/galaxy-reproduce`, `/galaxy-validate`, and `/galaxy-explain` work through the plugin method layer.
 - Live Galaxy execution goes through `galaxy-cli`, not direct BioBlend scripts.
 - Every live Galaxy run returns a Galaxy history link.
@@ -229,28 +231,40 @@ General workflow requirement:
 - [ ] Reports must distinguish generic structural validation from specialized task-family validation.
 - [ ] Add at least one acceptance test outside the current named profiles.
 
+### Slash Command Files
+
+- [x] `/galaxy-analyze` command prompt exists.
+- [x] `/galaxy-reproduce` command prompt exists.
+- [x] `/galaxy-explain` command prompt exists.
+- [x] `/galaxy-validate` command prompt exists.
+- [x] `/galaxy-submit-workflow` command prompt exists.
+- [x] `/galaxy-upload-workflow` command prompt exists.
+- [x] `/galaxy-list` command prompt exists.
+- [x] Structure check validates command frontmatter and `$ARGUMENTS` handling.
+- [ ] Test all seven in a fresh Codex session.
+
 ### `/galaxy-list`
 
-- [x] Command doc exists.
+- [x] Command prompt exists.
 - [ ] Test in fresh Codex session.
 - [ ] Include general workflow support, named validation profiles, and whether `galaxy-cli` and `bioartifact` are available.
 
 ### `/galaxy-reproduce`
 
-- [x] Command doc exists.
+- [x] Command prompt exists.
 - [x] BioBlend-backed DESeq2 test passed.
 - [ ] `galaxy-cli`-backed DESeq2 test passed.
 - [ ] Add at least one non-DESeq2 reproduce test.
 
 ### `/galaxy-analyze`
 
-- [x] Command doc exists.
+- [x] Command prompt exists.
 - [ ] Add a small live or simulated FASTQ analysis test.
 - [ ] Use `bioartifact fastq` or `paired_fastq` before upload where local files exist.
 
 ### `/galaxy-explain`
 
-- [x] Command doc exists.
+- [x] Command prompt exists.
 - [ ] Test against the public DESeq2 history.
 - [ ] Ensure it can explain:
   - job state
@@ -261,14 +275,14 @@ General workflow requirement:
 
 ### `/galaxy-validate`
 
-- [x] Command doc exists.
+- [x] Command prompt exists.
 - [ ] Validate the DESeq2 history using Galaxy metadata.
 - [ ] Validate downloaded DESeq2 output using `bioartifact`.
 - [ ] Save a `validation-report.md` and machine-readable validation JSON.
 
 ### `/galaxy-submit-workflow`
 
-- [x] Command doc exists.
+- [x] Command prompt exists.
 - [ ] Implement local package generation.
 - [ ] Export or reconstruct `workflow.ga`.
 - [ ] Export or generate `workflow.svg`.
@@ -345,7 +359,7 @@ The website should be history-first. A reproduced Galaxy history is enough to cr
   - metadata
   - validation summary
   - download links
-- [ ] Add `/galaxy-upload-workflow` command support:
+- [ ] Add `/galaxy-upload-workflow` website-entry generation support:
   - resolve completed Galaxy history
   - collect source, validation, and provenance metadata
   - create or update `workflows/<entry_id>/`

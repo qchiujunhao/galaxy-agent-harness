@@ -1,4 +1,26 @@
+---
+description: Publish or stage a reproduced Galaxy history or workflow entry for the static workflow website.
+argument-hint: [history-link-report-or-workflow-target]
+allowed-tools: [Read, Glob, Grep, Bash, Write, Edit, WebFetch]
+---
+
 # `/galaxy-upload-workflow`
+
+## Arguments
+
+The user invoked this command with: $ARGUMENTS
+
+## Invocation Instructions
+
+When this slash command is invoked:
+
+1. Treat `$ARGUMENTS` as the history, reproduction report, validation report, or workflow target to publish.
+2. Read `../HARNESS.md`, this command file, `../guides/workflow-site-format.md`, `../guides/workflow-submission.md`, `../guides/validation.md`, and relevant templates.
+3. Use `galaxy-cli` skills for Galaxy history inspection, workflow export, artifact retrieval, and public/importable checks.
+4. Do not make a Galaxy history public unless the user explicitly asks.
+5. Create or update a local website entry under `workflows/<entry_id>/` when enough metadata is available.
+6. Regenerate static site data when the site generator exists; otherwise record the missing generator as a publication warning.
+7. Return the Galaxy history link whenever a history can be resolved.
 
 ## Purpose
 

@@ -2,7 +2,7 @@
 
 Galaxy Agent Harness contains the `galaxy-analysis-plugin`, a thin Codex plugin for agent-operated Galaxy analysis.
 
-The plugin does not implement a second Galaxy backend. It gives the agent a shared method, command contracts, guides, and templates, then delegates real Galaxy operations to available Galaxy execution skills such as `galaxy-cli`.
+The plugin does not implement a second Galaxy backend. It gives the agent a shared method, slash-command prompts, command contracts, guides, and templates, then delegates real Galaxy operations to available Galaxy execution skills such as `galaxy-cli`.
 
 Workflow coverage is general by default. The named workflow families in the guides are validation profiles with stronger defaults, not the full set of workflows the plugin can attempt.
 
@@ -16,6 +16,7 @@ Implemented:
 - plugin manifest
 - Codex skill
 - shared harness
+- all v1 `/galaxy-*` slash-command prompt files
 - `/galaxy-*` command contracts
 - task-family and validation guides
 - report and workflow-submission templates
@@ -23,7 +24,6 @@ Implemented:
 
 Not implemented yet:
 
-- native host slash-command registration
 - direct Galaxy backend code
 - automated workflow package generator
 - GitHub Pages registry generator
@@ -33,6 +33,7 @@ Not implemented yet:
 ### Prerequisites
 
 - Codex Desktop or a Codex build that supports local plugins
+- a Codex build that supports plugin-level `commands/` for native slash invocation, or the manual fallback below
 - Python 3 for the validation script
 - Galaxy execution skills or tools if you want to run real Galaxy jobs
 - Galaxy credentials or API configuration for the target instance, if required by those execution tools
@@ -119,11 +120,15 @@ Install any Galaxy execution skills or local tools your environment uses. Withou
 
 ### Step 5: Verify the Plugin Behavior
 
+The plugin ships slash-command markdown files under `plugins/galaxy-analysis-plugin/commands/`.
+
 Start with a command that does not require a live Galaxy connection:
 
 ```text
 /galaxy-list
 ```
+
+If your host namespaces plugin commands, use the command entry that resolves to `galaxy-list`. If your Codex build does not expose plugin commands in autocomplete, use the manual fallback section below; the same command text is still routed by the `galaxy-analysis` skill.
 
 Then test the planning path:
 
@@ -156,9 +161,11 @@ Follow plugins/galaxy-analysis-plugin/skills/galaxy-analysis/SKILL.md.
 Run /galaxy-list.
 ```
 
-This does not install the plugin globally, but it exercises the same harness, command docs, guides, and templates.
+This does not install the plugin globally, but it exercises the same harness, slash-command docs, guides, and templates.
 
 ## Commands
+
+All v1 commands are implemented as plugin-level markdown slash commands with frontmatter and `$ARGUMENTS` handling.
 
 ### `/galaxy-analyze`
 
@@ -308,9 +315,15 @@ rsync -a --exclude '__pycache__' \
 
 Then restart the Codex session and rerun the plugin visibility check.
 
-### `/galaxy-*` text is not treated as a native command
+### `/galaxy-*` commands do not appear in autocomplete
 
-That is expected in the current v1. The command-style text is routed by the `galaxy-analysis` skill and command docs. Native host slash-command registration is a later integration step.
+Verify that the plugin is installed or enabled, then restart the Codex session. The command files live in:
+
+```text
+plugins/galaxy-analysis-plugin/commands/
+```
+
+Some hosts namespace plugin commands or do not expose plugin `commands/` yet. In that case, use the manual fallback prompt from this README; the `galaxy-analysis` skill still routes `/galaxy-*` text to the same command contracts.
 
 ### Galaxy execution does not run
 
@@ -330,6 +343,6 @@ If a workflow package fails validation, inspect the missing files listed by the 
 ## Next Steps
 
 1. Add a workflow package generator for `workflow.ga`, `metadata.yaml`, `README.md`, and validation reports.
-2. Add host-native command registration where Codex exposes it.
+2. Test all slash commands in a fresh Codex CLI/Desktop session.
 3. Add a static registry generator from `workflows/*/metadata.yaml`.
 4. Expand task-family guides and validation depth.

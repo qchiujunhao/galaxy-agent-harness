@@ -17,7 +17,7 @@ Actual Galaxy work is performed by the host agent using existing `galaxy-cli` sk
 
 The plugin follows this structure:
 
-- host plugin layer: command registration, asset loading, context injection
+- host plugin layer: slash-command files, command routing, asset loading, context injection
 - shared methodology layer: `HARNESS.md`, `commands/*.md`, `guides/*.md`, `templates/*`
 - execution layer: `galaxy-cli` skills
 - execution target: Galaxy
@@ -310,8 +310,10 @@ A website entry package should generally include:
 
 ## 10. Command Doc Contract
 
-Each command file under `commands/*.md` must define:
+Each command file under `commands/*.md` is both a Codex plugin slash-command prompt and an operational contract. It must define:
 
+- YAML frontmatter with a short `description`
+- an `$ARGUMENTS` handling section
 - command purpose
 - accepted inputs and invocation styles
 - phase-by-phase workflow
