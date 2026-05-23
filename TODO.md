@@ -440,6 +440,41 @@ Target completion after Phase 7: about 90%.
 
 The last 10% is polish, broader task-family coverage, deeper validation, and host-native command support where Codex exposes it.
 
+## Candidate Reproduction Examples
+
+Use these as the next website-entry candidates after the DESeq2 acceptance entry.
+
+- [ ] GTN sequence quality control
+  - Source: https://github.com/galaxyproject/training-material/tree/main/topics/sequence-analysis/tutorials/quality-control
+  - Workflow: `topics/sequence-analysis/tutorials/quality-control/workflows/quality_control.ga`
+  - Inputs: paired FASTQ subsets from Zenodo `10.5281/zenodo.61771`
+  - Why: small, fast, general workflow; validates FastQC, Cutadapt, and MultiQC.
+  - Validation target: FASTQ structure, FastQC text/html outputs, MultiQC report.
+- [ ] GTN microbial variant calling
+  - Source: https://github.com/galaxyproject/training-material/tree/main/topics/variant-analysis/tutorials/microbial-variants
+  - Workflow: `topics/variant-analysis/tutorials/microbial-variants/workflows/microbial_variant_calling.ga`
+  - Inputs: paired mutant FASTQs plus wildtype reference files from Zenodo `10.5281/zenodo.582600`
+  - Why: useful non-RNA example with compact bacterial data and explicit VCF-style outputs.
+  - Validation target: Snippy job state, VCF output, tabular summary, optional `bioartifact valid_vcf`.
+- [ ] GTN ATAC-seq chr22 workflow
+  - Source: https://github.com/galaxyproject/training-material/tree/main/topics/epigenetics/tutorials/atac-seq
+  - Workflow: `topics/epigenetics/tutorials/atac-seq/workflows/main_workflow.ga`
+  - Inputs: chr22 paired FASTQs and CTCF peaks from Zenodo `10.5281/zenodo.3862793`, plus `chr22_genes.bed`
+  - Why: good epigenomics coverage; exercises paired FASTQs, alignment, duplicate marking, MACS2 peak calling, and signal visualization.
+  - Validation target: expected mapping-stat text, MACS2 narrowPeak/summit outputs, optional `bioartifact narrowpeak`.
+- [ ] GTN Scanpy PBMC3K clustering
+  - Source: https://github.com/galaxyproject/training-material/tree/main/topics/single-cell/tutorials/scrna-scanpy-pbmc3k
+  - Workflow: `topics/single-cell/tutorials/scrna-scanpy-pbmc3k/workflows/Clustering-3k-PBMC-with-Scanpy.ga`
+  - Inputs: barcodes, genes, and matrix files from Zenodo `10.5281/zenodo.3581213`
+  - Why: adds a single-cell website entry without requiring raw FASTQ preprocessing.
+  - Validation target: Scanpy output states, marker table, PNG/SVG plots, h5ad metadata inspection.
+- [ ] GTN RNA-seq reads to counts
+  - Source: https://github.com/galaxyproject/training-material/tree/main/topics/transcriptomics/tutorials/rna-seq-reads-to-counts
+  - Workflow: `topics/transcriptomics/tutorials/rna-seq-reads-to-counts/workflows/rna-seq-reads-to-counts.ga`
+  - Inputs: tutorial count/QC inputs from Figshare plus mm10 RefSeq BED
+  - Why: complements the current downstream DESeq2 entry with an upstream reads-to-counts transcriptomics workflow.
+  - Validation target: read QC, alignment/count outputs, MultiQC-style report where available.
+
 ## Immediate Next Tasks
 
 1. Add a generic workflow acceptance test outside the current named profiles.
