@@ -30,7 +30,9 @@ Last updated: 2026-05-23
 - A static-site consistency check can verify committed `site/` and `docs/` files against `workflows/` metadata without rewriting the site.
 - Static workflow detail pages now render validation and provenance summaries directly, including checks, tool ids, fallbacks, and input source URLs when present.
 - An offline slash-command contract check now validates all seven command prompt files against expected routing, safety, and output policies.
-- A fresh ephemeral Codex CLI `/galaxy-list` smoke test confirmed local command-layer visibility and local `galaxy-cli`/`bioartifact` availability without running live Galaxy jobs. Evidence is under `local/plugin_tests/fresh_codex_galaxy_list_20260523/`.
+- A fresh ephemeral Codex CLI `/galaxy-list` smoke test confirmed local command-layer visibility, repo-local `galaxy-cli` availability, and source-checkout `bioartifact` visibility via `PYTHONPATH` without running live Galaxy jobs. Evidence is under `local/plugin_tests/fresh_codex_galaxy_list_20260523/`.
+- Fresh ephemeral Codex CLI smoke tests now cover all seven `/galaxy-*` command contracts in read-only/no-live-Galaxy mode. Evidence is under `local/plugin_tests/fresh_codex_galaxy_*_20260523/`.
+- The fresh slash-command smoke tests prove command-layer routing and contract visibility, not native host slash-command autocomplete or UI exposure.
 
 ## Direction Decision
 
@@ -268,7 +270,7 @@ General workflow requirement:
 - [x] `/galaxy-list` command prompt exists.
 - [x] Structure check validates command frontmatter and `$ARGUMENTS` handling.
 - [x] Offline command contract check validates all seven command files.
-- [ ] Test all seven in a fresh Codex session. Current evidence covers `/galaxy-list` in a fresh ephemeral CLI session; native autocomplete exposure remains host-dependent.
+- [x] Test all seven in a fresh Codex session with read-only command-layer smoke tests. Native autocomplete exposure remains host-dependent.
 
 ### `/galaxy-list`
 
@@ -286,13 +288,13 @@ General workflow requirement:
 ### `/galaxy-analyze`
 
 - [x] Command prompt exists.
-- [ ] Add a small live or simulated FASTQ analysis test.
+- [x] Add a read-only simulated FASTQ analysis routing test.
 - [ ] Use `bioartifact fastq` or `paired_fastq` before upload where local files exist.
 
 ### `/galaxy-explain`
 
 - [x] Command prompt exists.
-- [ ] Test against the public DESeq2 history.
+- [x] Read-only route test against the public DESeq2 history URL.
 - [ ] Ensure it can explain:
   - job state
   - inputs
@@ -303,6 +305,7 @@ General workflow requirement:
 ### `/galaxy-validate`
 
 - [x] Command prompt exists.
+- [x] Read-only route/package validation smoke against the DESeq2 workflow entry.
 - [ ] Validate the DESeq2 history using Galaxy metadata.
 - [x] Validate downloaded DESeq2 output using `bioartifact`.
 - [x] Save a validation report and machine-readable validation JSON.
@@ -310,6 +313,7 @@ General workflow requirement:
 ### `/galaxy-submit-workflow`
 
 - [x] Command prompt exists.
+- [x] Read-only draft-package route smoke confirms no PR is required by default.
 - [ ] Implement local package generation.
 - [ ] Export or reconstruct `workflow.ga`.
 - [ ] Export or generate `workflow.svg`.
@@ -430,6 +434,7 @@ Tests to keep:
 - [x] `galaxy-cli` availability check.
 - [x] `bioartifact` availability check.
 - [x] Offline slash-command contract check.
+- [x] Fresh read-only slash-command route smoke tests for all seven commands.
 - [x] Offline docs consistency check.
 - [x] Live `galaxy-cli` DESeq2 acceptance test.
 - [x] Public-history toggle test when publishing the DESeq2 entry to the public website.
@@ -445,7 +450,7 @@ Evidence policy:
 
 ## Phase 9: Design Completion Estimate
 
-Current completion against the original `design.md`: about 87%.
+Current completion against the original `design.md`: about 88%.
 
 Target completion after Phase 3: done.
 
@@ -468,13 +473,16 @@ Finished enough for public testing:
 - Workflow entry/package validation for public-site readiness checks.
 - Offline static-site consistency checking.
 - Offline slash-command contract checking.
+- Fresh read-only slash-command route smoke testing for all seven commands.
 
 Not finished yet:
 
 - Upstream or packaged `galaxy-cli` upload compatibility fix for current usegalaxy.org upload options.
 - `galaxy-cli` support for nested multiple-data tool inputs, so MultiQC can run without direct API fallback.
 - Full workflow package generation with `workflow.ga`, diagrams, thumbnails, and richer provenance.
-- Fresh-session slash-command test coverage for every command.
+- Native host/autocomplete exposure verification for every slash command.
+- Live `/galaxy-analyze`, `/galaxy-explain`, and `/galaxy-validate` mode tests beyond read-only route checks.
+- Repo-local `.venv` exposure for `bioartifact` as a normal executable or module without setting `PYTHONPATH` manually.
 - More diverse external non-Galaxy examples, especially alignment, variant, and RNA-seq/count workflows.
 
 The remaining work is not a blocker for keeping the repository public, but it is required before calling the project v1-complete or paper-ready.
@@ -529,5 +537,7 @@ Use external, non-Galaxy repositories as the next website-entry sources. GTN wor
 1. Add upstream/package work for the `galaxy-cli` upload option compatibility fix.
 2. Add `galaxy-cli` support for nested multiple-data tool inputs so MultiQC can run without a direct API fallback.
 3. Add workflow package generation for `workflow.ga`, diagrams, thumbnails, and richer provenance.
-4. Test the remaining slash commands in a fresh Codex CLI/Desktop session.
-5. Add more external non-Galaxy website entries once additional reproductions pass validation.
+4. Install or expose `bioartifact` through the repo-local `.venv` so `bioartifact` and `.venv/bin/python -m bioartifact` work without manual `PYTHONPATH`.
+5. Verify native slash-command autocomplete/host registration for all seven commands in Codex Desktop if required.
+6. Add live mode tests for `/galaxy-analyze`, `/galaxy-explain`, and `/galaxy-validate`.
+7. Add more external non-Galaxy website entries once additional reproductions pass validation.
