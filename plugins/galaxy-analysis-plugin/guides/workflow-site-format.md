@@ -79,6 +79,12 @@ Do not require an image to publish a history-first entry.
 - regenerate static HTML pages under `docs/`
 - optionally create a PR when requested
 
+## Public History Policy
+
+Local draft entries may point to private histories if they are clearly marked private.
+
+Entries published to the public website must point to Galaxy histories that are both public and importable. Before setting `galaxy_history_public: true` and `galaxy_history_importable: true` in metadata, verify the real Galaxy history state. If `galaxy-cli` lacks the needed toggle, use the Galaxy API as a narrow fallback and record that fallback reason in the report.
+
 Create or update a draft entry with:
 
 ```bash
@@ -89,7 +95,7 @@ python3 plugins/galaxy-analysis-plugin/scripts/create_workflow_entry.py \
   --summary "<summary>"
 ```
 
-The entry creator writes `workflows/<entry_id>/metadata.yaml`, `README.md`, `validation_report.json`, and `provenance.json`. It does not make Galaxy histories public.
+The entry creator writes `workflows/<entry_id>/metadata.yaml`, `README.md`, `validation_report.json`, and `provenance.json`. It does not make Galaxy histories public; make and verify the Galaxy history public/importable before using `--public --importable` for a public website entry.
 
 Regenerate the website with:
 

@@ -3,8 +3,8 @@
     {
       "created": "2026-05-23",
       "execution_surface": "galaxy-cli",
-      "galaxy_history_importable": false,
-      "galaxy_history_public": false,
+      "galaxy_history_importable": true,
+      "galaxy_history_public": true,
       "galaxy_history_url": "https://usegalaxy.org/histories/view?id=bbd44e69cb8906b520c2ac86da470003",
       "galaxy_instance": "https://usegalaxy.org",
       "id": "wf_20260523_intro-to-dge-deseq2-reproduction",
@@ -31,7 +31,7 @@
   ],
   "summary": {
     "entry_count": 1,
-    "generated_at": "2026-05-23T05:01:17+00:00",
+    "generated_at": "2026-05-23T05:12:41+00:00",
     "tags": {
       "deseq2": 1,
       "differential-expression": 1,

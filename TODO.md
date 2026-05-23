@@ -18,7 +18,7 @@ Last updated: 2026-05-23
 - The skill and harness instructions now explicitly require using the project-local `.venv` for `galaxy-cli` and `bioartifact` local commands.
 - `galaxy-cli config test` succeeds against usegalaxy.org with the current environment credentials.
 - A private `galaxy-cli` smoke history was created on 2026-05-23: https://usegalaxy.org/histories/view?id=bbd44e69cb8906b53497c24c3a2df506
-- A private `galaxy-cli` DESeq2 acceptance history was created on 2026-05-23: https://usegalaxy.org/histories/view?id=bbd44e69cb8906b520c2ac86da470003
+- A public/importable `galaxy-cli` DESeq2 acceptance history was created on 2026-05-23: https://usegalaxy.org/histories/view?id=bbd44e69cb8906b520c2ac86da470003
 - The local `.venv` copy of `galaxy-cli` 1.0.2 has a temporary upload compatibility patch for current usegalaxy.org upload options (`space_to_tab` and `to_posix_lines`). Upstream or packaged `galaxy-cli` should carry this fix before broad release instructions are final.
 - `bioartifact` exists in a sibling development checkout and can run from source with `PYTHONPATH=/path/to/bioartifact/src`.
 - `bioartifact` is useful for artifact validation. The Galaxy DESeq2 raw table is headerless and includes rows with missing p-values; a normalized finite-row validation copy passes the current `de_table` contract.
@@ -40,7 +40,7 @@ The plugin is v1-ready when all of the following are true:
 - `/galaxy-list`, `/galaxy-reproduce`, `/galaxy-validate`, and `/galaxy-explain` work through the plugin method layer.
 - Live Galaxy execution goes through `galaxy-cli`, not direct BioBlend scripts.
 - Every live Galaxy run returns a Galaxy history link.
-- Histories are not made public unless the user explicitly asks.
+- Histories are not made public unless the user explicitly asks. Publishing an entry to the public website counts as an explicit public-history request, and the Galaxy history must be public/importable before the website entry is marked public.
 - General Galaxy workflows are supported through a generic inspect, infer, plan, execute, validate, summarize path.
 - Named workflow families are treated as validation profiles, not support limits.
 - Reproduce mode has at least one passing acceptance run using `galaxy-cli`.
@@ -224,7 +224,8 @@ Goal: remove ambiguity from future runs.
   - live acceptance testing
 - [x] README must say that histories are private unless the user asks to publish/import.
 - [x] HARNESS must require the Galaxy history link for all Galaxy-backed runs.
-- [x] HARNESS must not require public histories.
+- [x] HARNESS must not require public histories for local drafts.
+- [x] HARNESS must require public/importable histories for entries published to the public website.
 - [x] HARNESS must require reports to name the execution surface:
   - `galaxy-cli`
   - fallback reason, if any
@@ -400,6 +401,7 @@ Acceptance criteria:
 - [x] A local static website can be generated from one reproduced Galaxy history entry.
 - [x] The website can show entries even when `workflow.ga` or `workflow.svg` is missing.
 - [x] `/galaxy-upload-workflow` can create a draft website entry without making the Galaxy history public.
+- [x] Public website entries require public/importable Galaxy histories.
 
 Status: the first generated entry is `workflows/wf_20260523_intro-to-dge-deseq2-reproduction/`.
 
@@ -415,7 +417,7 @@ Tests to keep:
 - [x] `bioartifact` availability check.
 - [ ] Offline docs consistency check.
 - [x] Live `galaxy-cli` DESeq2 acceptance test.
-- [ ] Public-history toggle test only when explicitly requested.
+- [x] Public-history toggle test when publishing the DESeq2 entry to the public website.
 - [ ] Package generation test.
 - [x] Registry generation test.
 
@@ -440,9 +442,8 @@ The last 10% is polish, broader task-family coverage, deeper validation, and hos
 
 ## Immediate Next Tasks
 
-1. Decide whether the current DESeq2 Galaxy history should be made public/importable for the website.
-2. Add a generic workflow acceptance test outside the current named profiles.
-3. Add upstream/package work for the `galaxy-cli` upload option compatibility fix.
-4. Add workflow package generation for `workflow.ga`, diagrams, thumbnails, and richer provenance.
-5. Test the remaining slash commands in a fresh Codex CLI/Desktop session.
-6. Add more website entries once additional reproductions pass validation.
+1. Add a generic workflow acceptance test outside the current named profiles.
+2. Add upstream/package work for the `galaxy-cli` upload option compatibility fix.
+3. Add workflow package generation for `workflow.ga`, diagrams, thumbnails, and richer provenance.
+4. Test the remaining slash commands in a fresh Codex CLI/Desktop session.
+5. Add more website entries once additional reproductions pass validation.

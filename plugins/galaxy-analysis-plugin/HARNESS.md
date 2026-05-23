@@ -243,7 +243,8 @@ Required behavior:
 - create or update a website entry under `workflows/<entry_id>/`
 - attach `workflow.ga`, `workflow.svg`, thumbnails, and downloads when available
 - validate readiness before publication
-- keep histories private unless the user explicitly asks to make them public/importable
+- keep histories private for local draft entries unless the user explicitly asks to make them public/importable
+- require public website entries to point to public and importable Galaxy histories; publishing to the public website is explicit permission to make the referenced history public/importable
 - optionally create a PR
 
 ## 8. Validation Model

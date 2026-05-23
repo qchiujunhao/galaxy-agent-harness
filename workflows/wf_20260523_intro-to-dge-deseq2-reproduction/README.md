@@ -13,8 +13,8 @@ Galaxy CLI reproduction of the Intro-to-DGE count-matrix differential-expression
 ## Galaxy Reproduction
 
 - History: https://usegalaxy.org/histories/view?id=bbd44e69cb8906b520c2ac86da470003
-- Public: no
-- Importable: no
+- Public: yes
+- Importable: yes
 - Execution surface: galaxy-cli
 
 ## Validation

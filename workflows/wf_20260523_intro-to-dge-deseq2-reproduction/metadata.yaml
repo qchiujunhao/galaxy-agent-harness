@@ -10,8 +10,8 @@ source_url: "https://github.com/hbctraining/Intro-to-DGE"
 galaxy_instance: "https://usegalaxy.org"
 galaxy_history_url: "https://usegalaxy.org/histories/view?id=bbd44e69cb8906b520c2ac86da470003"
 galaxy_history_id: "bbd44e69cb8906b520c2ac86da470003"
-galaxy_history_public: false
-galaxy_history_importable: false
+galaxy_history_public: true
+galaxy_history_importable: true
 submitted_by: ""
 submission_date: "2026-05-23"
 created: "2026-05-23"

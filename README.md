@@ -161,7 +161,7 @@ Verify configuration:
 galaxy-cli config test
 ```
 
-Histories are private unless the user explicitly asks to make them public or importable. Final responses and reports must still include the Galaxy history link whenever a history can be resolved.
+Histories are private unless the user explicitly asks to make them public or importable. Publishing an entry to the public workflow website counts as an explicit request: the Galaxy history should be public and importable before the website entry is marked public. Final responses and reports must still include the Galaxy history link whenever a history can be resolved.
 
 ### Step 6: Configure Optional `bioartifact` Validation
 
@@ -245,7 +245,7 @@ python3 plugins/galaxy-analysis-plugin/scripts/create_workflow_entry.py \
   --tag differential-expression
 ```
 
-This creates `workflows/<entry_id>/`, keeps the history private unless `--public` is supplied, and regenerates `site/` plus `docs/`.
+This creates `workflows/<entry_id>/`, keeps the history private unless `--public` is supplied, and regenerates `site/` plus `docs/`. For public website entries, first make and verify the Galaxy history public/importable, then pass `--public --importable` so the metadata matches the real Galaxy state.
 
 Generated outputs:
 
