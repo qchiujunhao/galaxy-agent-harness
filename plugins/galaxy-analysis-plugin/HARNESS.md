@@ -47,6 +47,8 @@ Validation is available as a support mode for completed runs and output sets. `/
 
 The plugin should treat `galaxy-cli` skills as the canonical execution surface for Galaxy operations.
 
+When running local commands from this repository, use the project-local virtual environment. Prefer explicit venv paths such as `.venv/bin/galaxy-cli` and `.venv/bin/python -m bioartifact`, or activate `.venv` before running `galaxy-cli` or `bioartifact`. Do not install Galaxy execution dependencies into the system Python.
+
 The plugin should not:
 
 - duplicate Galaxy execution logic in host code

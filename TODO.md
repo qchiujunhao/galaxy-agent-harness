@@ -15,6 +15,7 @@ Last updated: 2026-05-23
 - A live `/galaxy-reproduce` acceptance test ran DESeq2 on usegalaxy.org through `galaxy-cli` and passed.
 - Live test evidence is stored under ignored `local/plugin_tests/` directories and should not be published.
 - `galaxy-cli` 1.0.2 is installed in the repo-local `.venv`; use `.venv/bin/galaxy-cli` or activate the venv.
+- The skill and harness instructions now explicitly require using the project-local `.venv` for `galaxy-cli` and `bioartifact` local commands.
 - `galaxy-cli config test` succeeds against usegalaxy.org with the current environment credentials.
 - A private `galaxy-cli` smoke history was created on 2026-05-23: https://usegalaxy.org/histories/view?id=bbd44e69cb8906b53497c24c3a2df506
 - A private `galaxy-cli` DESeq2 acceptance history was created on 2026-05-23: https://usegalaxy.org/histories/view?id=bbd44e69cb8906b520c2ac86da470003
@@ -95,6 +96,7 @@ export GALAXY_API_KEY="..."
   - use fallback tools only when `galaxy-cli` lacks a required capability
   - record fallback reason in the report
 - [x] Update command docs to make `galaxy-cli` the explicit execution path.
+- [x] Update skill and harness instructions to require the repo-local `.venv` for local `galaxy-cli` and `bioartifact` command execution.
 
 Acceptance check:
 

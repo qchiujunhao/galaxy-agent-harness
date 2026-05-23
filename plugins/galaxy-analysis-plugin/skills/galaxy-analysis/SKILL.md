@@ -32,6 +32,7 @@ For every task:
 - Classify the task family before choosing Galaxy tools.
 - Make assumptions explicit.
 - Use existing `galaxy-cli` skills for real Galaxy operations.
+- Use the project-local virtual environment for local command execution. Prefer `.venv/bin/galaxy-cli` and `.venv/bin/python -m bioartifact` from the repository root, or activate `.venv` before running `galaxy-cli` or `bioartifact`.
 - Use fallback Galaxy execution tools only when `galaxy-cli` is unavailable or lacks the required capability, and record the fallback reason.
 - If no Galaxy execution capability is available, stop at the planning or explanation boundary and clearly state what capability is missing.
 - Validate real outputs. Do not mark success from a plausible plan alone.
