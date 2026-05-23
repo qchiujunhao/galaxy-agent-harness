@@ -168,12 +168,15 @@ Histories are private unless the user explicitly asks to make them public or imp
 
 Use `bioartifact` for deterministic local validation after Galaxy outputs are downloaded.
 
-Preferred installation depends on where `bioartifact` is published in your environment. For local development:
+Preferred installation depends on where `bioartifact` is published in your environment. For local development from a sibling checkout, install it into the repo-local venv:
 
 ```bash
-export PYTHONPATH="/path/to/bioartifact/src:$PYTHONPATH"
+.venv/bin/python -m pip install -e ../bioartifact
+.venv/bin/bioartifact --help
 .venv/bin/python -m bioartifact --help
 ```
+
+Use `PYTHONPATH=/path/to/bioartifact/src` only as a temporary fallback when an editable install is not possible.
 
 `bioartifact` does not replace Galaxy job-state validation. Use it together with Galaxy metadata, output inventory, and task-specific checks.
 
@@ -535,12 +538,15 @@ This modifies only the ignored local venv. Do not commit `.venv/`.
 
 ### `bioartifact` is unavailable
 
-Install or expose `bioartifact` before local artifact validation. If using a source checkout:
+Install `bioartifact` into the repo-local venv before local artifact validation. If using a sibling source checkout:
 
 ```bash
-export PYTHONPATH="/path/to/bioartifact/src:$PYTHONPATH"
+.venv/bin/python -m pip install -e ../bioartifact
+.venv/bin/bioartifact --help
 .venv/bin/python -m bioartifact --help
 ```
+
+If an editable install is not possible, temporarily expose the source checkout with `PYTHONPATH=/path/to/bioartifact/src`.
 
 ### Validation fails
 

@@ -21,10 +21,11 @@ Last updated: 2026-05-23
 - A public/importable `galaxy-cli` DESeq2 acceptance history was created on 2026-05-23: https://usegalaxy.org/histories/view?id=bbd44e69cb8906b520c2ac86da470003
 - A public/importable external non-Galaxy `nf-core/demo` reproduction history was created on 2026-05-23: https://usegalaxy.org/histories/view?id=bbd44e69cb8906b5bbf93ef93172ec2c
 - A public/importable external non-Galaxy `tdayris/fair_fastqc_multiqc` reproduction history was created on 2026-05-23: https://usegalaxy.org/histories/view?id=bbd44e69cb8906b5ee6e744aaffc562c
+- A private live FASTQ analyze/FastQC smoke history was created on 2026-05-23: https://usegalaxy.org/histories/view?id=bbd44e69cb8906b50a47fc45d55ddf5d
 - The `nf-core/demo` run used `galaxy-cli` for uploads, FastQC, and Seqtk. MultiQC exposed a current `galaxy-cli` limitation for nested multiple-data tool inputs, so a narrow Galaxy API fallback was used and recorded in provenance.
 - The `tdayris/fair_fastqc_multiqc` run used `galaxy-cli` for uploads and FastQC. MultiQC exposed the same nested multiple-data limitation, so the same narrow Galaxy API fallback was used and recorded.
 - The local `.venv` copy of `galaxy-cli` 1.0.2 has a temporary upload compatibility patch for current usegalaxy.org upload options (`space_to_tab` and `to_posix_lines`). Upstream or packaged `galaxy-cli` should carry this fix before broad release instructions are final.
-- `bioartifact` exists in a sibling development checkout and can run from source with `PYTHONPATH=/path/to/bioartifact/src`.
+- `bioartifact` exists in a sibling development checkout and is installed editable into the repo-local `.venv`; `.venv/bin/bioartifact` and `.venv/bin/python -m bioartifact` both work without manual `PYTHONPATH`.
 - `bioartifact` is useful for artifact validation. The Galaxy DESeq2 raw table is headerless and includes rows with missing p-values; a normalized finite-row validation copy passes the current `de_table` contract.
 - A workflow entry/package validator now checks metadata, artifact references, validation/provenance JSON, public/importable metadata, and obvious credential or private-path leaks.
 - A static-site consistency check can verify committed `site/` and `docs/` files against `workflows/` metadata without rewriting the site.
@@ -33,6 +34,8 @@ Last updated: 2026-05-23
 - A fresh ephemeral Codex CLI `/galaxy-list` smoke test confirmed local command-layer visibility, repo-local `galaxy-cli` availability, and source-checkout `bioartifact` visibility via `PYTHONPATH` without running live Galaxy jobs. Evidence is under `local/plugin_tests/fresh_codex_galaxy_list_20260523/`.
 - Fresh ephemeral Codex CLI smoke tests now cover all seven `/galaxy-*` command contracts in read-only/no-live-Galaxy mode. Evidence is under `local/plugin_tests/fresh_codex_galaxy_*_20260523/`.
 - The fresh slash-command smoke tests prove command-layer routing and contract visibility, not native host slash-command autocomplete or UI exposure.
+- Live `galaxy-cli` metadata inspection evidence for the public DESeq2 history is stored under `local/plugin_tests/live_explain_validate_deseq2_20260523/`.
+- Live `galaxy-cli` FASTQ analyze/FastQC evidence is stored under `local/plugin_tests/live_analyze_fastq_qc_20260523/`.
 
 ## Direction Decision
 
@@ -289,25 +292,27 @@ General workflow requirement:
 
 - [x] Command prompt exists.
 - [x] Add a read-only simulated FASTQ analysis routing test.
-- [ ] Use `bioartifact fastq` or `paired_fastq` before upload where local files exist.
+- [x] Add a live FASTQ/FastQC smoke test through `galaxy-cli`.
+- [x] Use `bioartifact fastq` before upload where local files exist.
 
 ### `/galaxy-explain`
 
 - [x] Command prompt exists.
 - [x] Read-only route test against the public DESeq2 history URL.
-- [ ] Ensure it can explain:
+- [x] Confirm successful-history explanation evidence from live Galaxy metadata:
   - job state
   - inputs
   - outputs
-  - warnings
-  - failed jobs
+  - absence of failed jobs
+- [ ] Add or reuse a failed-job fixture for warning and failure explanation.
 
 ### `/galaxy-validate`
 
 - [x] Command prompt exists.
 - [x] Read-only route/package validation smoke against the DESeq2 workflow entry.
-- [ ] Validate the DESeq2 history using Galaxy metadata.
+- [x] Validate the DESeq2 history using Galaxy metadata.
 - [x] Validate downloaded DESeq2 output using `bioartifact`.
+- [x] Validate downloaded DESeq2 output using `.venv/bin/bioartifact` without manual `PYTHONPATH`.
 - [x] Save a validation report and machine-readable validation JSON.
 
 ### `/galaxy-submit-workflow`
@@ -437,6 +442,8 @@ Tests to keep:
 - [x] Fresh read-only slash-command route smoke tests for all seven commands.
 - [x] Offline docs consistency check.
 - [x] Live `galaxy-cli` DESeq2 acceptance test.
+- [x] Live `galaxy-cli` DESeq2 explain/validate metadata inspection test.
+- [x] Live `galaxy-cli` FASTQ analyze/FastQC smoke test.
 - [x] Public-history toggle test when publishing the DESeq2 entry to the public website.
 - [ ] Package generation test.
 - [x] Registry generation test.
@@ -450,7 +457,7 @@ Evidence policy:
 
 ## Phase 9: Design Completion Estimate
 
-Current completion against the original `design.md`: about 88%.
+Current completion against the original `design.md`: about 89%.
 
 Target completion after Phase 3: done.
 
@@ -481,8 +488,7 @@ Not finished yet:
 - `galaxy-cli` support for nested multiple-data tool inputs, so MultiQC can run without direct API fallback.
 - Full workflow package generation with `workflow.ga`, diagrams, thumbnails, and richer provenance.
 - Native host/autocomplete exposure verification for every slash command.
-- Live `/galaxy-analyze`, `/galaxy-explain`, and `/galaxy-validate` mode tests beyond read-only route checks.
-- Repo-local `.venv` exposure for `bioartifact` as a normal executable or module without setting `PYTHONPATH` manually.
+- Failed-job fixture coverage for `/galaxy-explain`.
 - More diverse external non-Galaxy examples, especially alignment, variant, and RNA-seq/count workflows.
 
 The remaining work is not a blocker for keeping the repository public, but it is required before calling the project v1-complete or paper-ready.
@@ -537,7 +543,6 @@ Use external, non-Galaxy repositories as the next website-entry sources. GTN wor
 1. Add upstream/package work for the `galaxy-cli` upload option compatibility fix.
 2. Add `galaxy-cli` support for nested multiple-data tool inputs so MultiQC can run without a direct API fallback.
 3. Add workflow package generation for `workflow.ga`, diagrams, thumbnails, and richer provenance.
-4. Install or expose `bioartifact` through the repo-local `.venv` so `bioartifact` and `.venv/bin/python -m bioartifact` work without manual `PYTHONPATH`.
-5. Verify native slash-command autocomplete/host registration for all seven commands in Codex Desktop if required.
-6. Add live mode tests for `/galaxy-analyze`, `/galaxy-explain`, and `/galaxy-validate`.
-7. Add more external non-Galaxy website entries once additional reproductions pass validation.
+4. Verify native slash-command autocomplete/host registration for all seven commands in Codex Desktop if required.
+5. Add or reuse a failed-job fixture for `/galaxy-explain`.
+6. Add more external non-Galaxy website entries once additional reproductions pass validation.
