@@ -79,7 +79,19 @@ Do not require an image to publish a history-first entry.
 - regenerate static HTML pages under `docs/`
 - optionally create a PR when requested
 
-Use the bundled generator:
+Create or update a draft entry with:
+
+```bash
+python3 plugins/galaxy-analysis-plugin/scripts/create_workflow_entry.py \
+  --title "<title>" \
+  --source-url "<github-url>" \
+  --galaxy-history-url "<history-url>" \
+  --summary "<summary>"
+```
+
+The entry creator writes `workflows/<entry_id>/metadata.yaml`, `README.md`, `validation_report.json`, and `provenance.json`. It does not make Galaxy histories public.
+
+Regenerate the website with:
 
 ```bash
 python3 plugins/galaxy-analysis-plugin/scripts/generate_workflow_site.py

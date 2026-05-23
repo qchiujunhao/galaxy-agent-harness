@@ -26,6 +26,7 @@ REQUIRED_FILES = [
     "guides/galaxy-cli-execution.md",
     "guides/workflow-submission.md",
     "guides/workflow-site-format.md",
+    "scripts/create_workflow_entry.py",
     "scripts/generate_workflow_site.py",
     "templates/analysis-plan-template.md",
     "templates/reproduction-report-template.md",
@@ -81,9 +82,10 @@ def main() -> int:
             if rel not in text:
                 errors.append(f"skill does not reference {rel}")
 
-    site_generator = ROOT / "scripts/generate_workflow_site.py"
-    if site_generator.is_file() and not site_generator.stat().st_mode & 0o111:
-        errors.append("scripts/generate_workflow_site.py must be executable")
+    for script_name in ["scripts/create_workflow_entry.py", "scripts/generate_workflow_site.py"]:
+        script = ROOT / script_name
+        if script.is_file() and not script.stat().st_mode & 0o111:
+            errors.append(f"{script_name} must be executable")
 
     if errors:
         for error in errors:

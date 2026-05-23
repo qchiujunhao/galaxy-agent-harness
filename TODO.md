@@ -8,6 +8,7 @@ Last updated: 2026-05-11
 - The shared method layer exists: `HARNESS.md`, slash-command docs, guides, templates, and a structure check.
 - All seven v1 `/galaxy-*` commands have plugin-level `commands/*.md` prompt files with frontmatter and `$ARGUMENTS` handling.
 - A static workflow-site generator now writes `site/*.json` and `docs/*.html` from `workflows/*/metadata.yaml`.
+- A draft entry creator now writes `workflows/<entry_id>/` records from a GitHub/source URL plus Galaxy history URL and regenerates the website.
 - A live `/galaxy-reproduce` acceptance test ran DESeq2 on usegalaxy.org and passed.
 - Live test evidence is stored under ignored `local/plugin_tests/` directories and should not be published.
 - The live test used BioBlend directly, not `galaxy-cli`.
@@ -360,12 +361,12 @@ The website should be history-first. A reproduced Galaxy history is enough to cr
   - metadata
   - validation summary
   - download links
-- [ ] Add `/galaxy-upload-workflow` website-entry generation support:
+- [x] Add `/galaxy-upload-workflow` local website-entry generation support:
   - resolve completed Galaxy history
   - collect source, validation, and provenance metadata
   - create or update `workflows/<entry_id>/`
   - regenerate static site index data
-  - optionally open a PR when requested
+- [ ] Add `/galaxy-upload-workflow` PR publishing support when requested.
 - [x] Define minimum website entry metadata:
   - id
   - title
@@ -426,6 +427,6 @@ The last 10% is polish, broader task-family coverage, deeper validation, and hos
 2. Re-run the `Intro-to-DGE` acceptance test using only `galaxy-cli`.
 3. Download the DESeq2 result table and test `bioartifact` against it.
 4. Decide whether to normalize Galaxy DE tables in this repo or add alias support to `bioartifact`.
-5. Implement `/galaxy-upload-workflow` draft entry creation from a completed history.
-6. Add a generic workflow acceptance test outside the current named profiles.
-7. Add a fresh acceptance report under `local/plugin_tests/fair_cli_session/`.
+5. Add a generic workflow acceptance test outside the current named profiles.
+6. Add a fresh acceptance report under `local/plugin_tests/fair_cli_session/`.
+7. Create the first real public website entry after a `galaxy-cli` run passes validation.

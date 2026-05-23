@@ -218,6 +218,21 @@ Generate machine-readable site data and GitHub Pages-compatible HTML:
 python3 plugins/galaxy-analysis-plugin/scripts/generate_workflow_site.py
 ```
 
+Create a draft website entry from a reproduced GitHub-to-Galaxy run:
+
+```bash
+python3 plugins/galaxy-analysis-plugin/scripts/create_workflow_entry.py \
+  --title "Intro to DGE reproduction" \
+  --source-url "https://github.com/hbctraining/Intro-to-DGE" \
+  --galaxy-history-url "https://usegalaxy.org/histories/..." \
+  --summary "Draft reproduction of the count-matrix differential expression workflow." \
+  --validation-status draft \
+  --tag rnaseq \
+  --tag differential-expression
+```
+
+This creates `workflows/<entry_id>/`, keeps the history private unless `--public` is supplied, and regenerates `site/` plus `docs/`.
+
 Generated outputs:
 
 ```text
@@ -345,6 +360,7 @@ For nontrivial tasks, the plugin follows the harness phase model:
       templates/
       skills/galaxy-analysis/SKILL.md
       scripts/check_structure.py
+      scripts/create_workflow_entry.py
       scripts/generate_workflow_site.py
 ```
 
