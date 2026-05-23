@@ -245,6 +245,16 @@ docs/styles.css
 docs/workflows/<slug>/index.html
 ```
 
+To host the website on GitHub Pages after the repository is public:
+
+1. Push the generated `docs/` directory to `main`.
+2. In GitHub, open Settings -> Pages.
+3. Set Source to `Deploy from a branch`.
+4. Select branch `main` and folder `/docs`.
+5. Save and wait for GitHub Pages to publish the site.
+
+The committed `docs/.nojekyll` file keeps GitHub Pages from applying Jekyll processing.
+
 ## Manual Development Fallback
 
 If the plugin is not visible in your Codex plugin UI yet, you can still test the method layer from this repository by asking Codex to use the skill file directly:
