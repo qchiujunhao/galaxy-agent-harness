@@ -74,6 +74,34 @@
 <p>Entry id: `wf_20260523_intro-to-dge-deseq2-reproduction`</p>
   </section>
   <section class="panel">
+    <h2>Validation Summary</h2>
+    <table class="summary-table">
+<tr><th>Status</th><td>pass</td></tr>
+<tr><th>Profile</th><td>rnaseq_differential_expression</td></tr>
+<tr><th>Checks</th><td>7</td></tr>
+</table>
+<h3>Checks</h3>
+<table><tr><th>Name</th><th>Status</th><th>Details</th></tr>
+<tr><td>galaxy_history_created</td><td>pass</td><td>{&quot;details&quot;: {&quot;history_id&quot;: &quot;bbd44e69cb8906b520c2ac86da470003&quot;}}</td></tr>
+<tr><td>inputs_uploaded</td><td>pass</td><td>{&quot;details&quot;: {&quot;sample_count&quot;: 8, &quot;sample_sheet_id&quot;: &quot;f9cad7b01a4721351085ab574fafdb35&quot;}}</td></tr>
+<tr><td>collection_order</td><td>pass</td><td>{&quot;details&quot;: {&quot;collection_id&quot;: &quot;1bc813c15642b5fd&quot;, &quot;sample_order&quot;: [&quot;KO1&quot;, &quot;KO2&quot;, &quot;KO3&quot;, &quot;KO4&quot;, &quot;WT1&quot;, &quot;WT2&quot;, &quot;WT3&quot;, &quot;WT4&quot;]}}</td></tr>
+<tr><td>deseq2_job</td><td>pass</td><td>{&quot;details&quot;: {&quot;job_id&quot;: &quot;bbd44e69cb8906b564432cfe370df579&quot;, &quot;tool_id&quot;: &quot;toolshed.g2.bx.psu.edu/repos/iuc/deseq2/deseq2/2.11.40.8+galaxy2&quot;}}</td></tr>
+<tr><td>result_table</td><td>pass</td><td>{&quot;details&quot;: {&quot;data_type&quot;: &quot;galaxy.datatypes.tabular.Tabular&quot;, &quot;extension&quot;: &quot;tabular&quot;, &quot;file_size&quot;: 4889011, &quot;genome_build&quot;: &quot;?&quot;, &quot;history_content_type&quot;: &quot;dataset&quot;, &quot;id&quot;: &quot;f9cad7b01a4721351f790a52bb713318&quot;, &quot;misc_blurb&quot;: &quot;47,729 lines 7 columns&quot;, &quot;name&quot;: &quot;DESeq2 result file on dataset 9-17 and collection 18&quot;, &quot;state&quot;: &quot;ok&quot;, &quot;visible&quot;: true}}</td></tr>
+<tr><td>bioartifact_de_table_contract</td><td>pass</td><td>{&quot;details&quot;: {&quot;contract&quot;: &quot;de_table&quot;, &quot;validation_copy&quot;: &quot;deseq2_results.de_table_contract.tsv&quot;}}</td></tr>
+<tr><td>raw_de_table_contract</td><td>warning</td><td>{&quot;details&quot;: {&quot;passed&quot;: false, &quot;raw_result&quot;: &quot;deseq2_results.tsv&quot;, &quot;reason&quot;: &quot;Galaxy DESeq2 download has no header and includes rows with missing p-values; a normalized finite-row copy was used for the strict contract.&quot;}}</td></tr>
+</table>
+  </section>
+  <section class="panel">
+    <h2>Provenance Summary</h2>
+    <table class="summary-table">
+<tr><th>execution_surface</th><td>galaxy-cli</td></tr>
+<tr><th>created</th><td>2026-05-23</td></tr>
+<tr><th>source_url</th><td><a href="https://github.com/hbctraining/Intro-to-DGE">https://github.com/hbctraining/Intro-to-DGE</a></td></tr>
+<tr><th>source_ref</th><td>190d303ad44c33d2d64e013ebe34837e73c3f332</td></tr>
+<tr><th>galaxy_history_url</th><td><a href="https://usegalaxy.org/histories/view?id=bbd44e69cb8906b520c2ac86da470003">https://usegalaxy.org/histories/view?id=bbd44e69cb8906b520c2ac86da470003</a></td></tr>
+</table>
+  </section>
+  <section class="panel">
     <h2>Downloads</h2>
     <ul><li><a href="files/validation_report.json">validation report</a></li>
 <li><a href="files/provenance.json">provenance</a></li>

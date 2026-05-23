@@ -74,6 +74,57 @@
 <p>Entry id: `wf_20260523_nf-core-demo-nextflow-qc-reproduction`</p>
   </section>
   <section class="panel">
+    <h2>Validation Summary</h2>
+    <table class="summary-table">
+<tr><th>Status</th><td>pass</td></tr>
+<tr><th>Profile</th><td>general_galaxy_workflow</td></tr>
+<tr><th>Checks</th><td>8</td></tr>
+</table>
+<h3>Checks</h3>
+<table><tr><th>Name</th><th>Status</th><th>Details</th></tr>
+<tr><td>external_non_galaxy_source</td><td>pass</td><td>{&quot;source_url&quot;: &quot;https://github.com/nf-core/demo&quot;}</td></tr>
+<tr><td>bioartifact_paired_fastq</td><td>pass</td><td>{&quot;samples&quot;: [&quot;SAMPLE1_PE&quot;, &quot;SAMPLE2_PE&quot;]}</td></tr>
+<tr><td>galaxy_uploads_ok</td><td>pass</td><td>{&quot;dataset_count&quot;: 4}</td></tr>
+<tr><td>fastqc_raw_ok</td><td>pass</td><td>{&quot;job_count&quot;: 4}</td></tr>
+<tr><td>seqtk_trim_ok</td><td>pass</td><td>{&quot;job_count&quot;: 4}</td></tr>
+<tr><td>fastqc_trimmed_ok</td><td>pass</td><td>{&quot;job_count&quot;: 4}</td></tr>
+<tr><td>multiqc_ok</td><td>pass</td><td>{&quot;output_id&quot;: &quot;f9cad7b01a47213545b9f2582f0bd594&quot;}</td></tr>
+<tr><td>history_public_importable</td><td>pass</td><td></td></tr>
+</table>
+<h3>Warnings</h3>
+<ul>
+<li>The first MultiQC submission through galaxy-cli did not bind the nested multiple-data input; a narrow Galaxy API fallback submitted the corrected MultiQC payload in the same history.</li>
+</ul>
+  </section>
+  <section class="panel">
+    <h2>Provenance Summary</h2>
+    <table class="summary-table">
+<tr><th>execution_surface</th><td>galaxy-cli</td></tr>
+<tr><th>created</th><td>2026-05-23</td></tr>
+<tr><th>source_url</th><td><a href="https://github.com/nf-core/demo">https://github.com/nf-core/demo</a></td></tr>
+<tr><th>source_ref</th><td>45904cb9d12db3d89900e6c479fe604ef71b297b</td></tr>
+<tr><th>galaxy_history_url</th><td><a href="https://usegalaxy.org/histories/view?id=bbd44e69cb8906b5bbf93ef93172ec2c">https://usegalaxy.org/histories/view?id=bbd44e69cb8906b5bbf93ef93172ec2c</a></td></tr>
+</table>
+<h3>Galaxy Tools</h3>
+<table><tr><th>Name</th><th>Tool ID</th></tr>
+<tr><td>fastqc</td><td>toolshed.g2.bx.psu.edu/repos/devteam/fastqc/fastqc/0.74+galaxy1</td></tr>
+<tr><td>multiqc</td><td>toolshed.g2.bx.psu.edu/repos/iuc/multiqc/multiqc/1.34+galaxy0</td></tr>
+<tr><td>seqtk_trimfq</td><td>toolshed.g2.bx.psu.edu/repos/iuc/seqtk/seqtk_trimfq/1.5+galaxy0</td></tr>
+</table>
+<h3>Fallbacks</h3>
+<ul>
+<li>Galaxy API fallback for MultiQC nested multiple-data input.</li>
+<li>Galaxy API fallback for published/importable flags.</li>
+</ul>
+<h3>Input Sources</h3>
+<table><tr><th>Name</th><th>URL</th></tr>
+<tr><td>SAMPLE1_PE_R1</td><td><a href="https://raw.githubusercontent.com/nf-core/test-datasets/viralrecon/illumina/amplicon/sample1_R1.fastq.gz">https://raw.githubusercontent.com/nf-core/test-datasets/viralrecon/illumina/amplicon/sample1_R1.fastq.gz</a></td></tr>
+<tr><td>SAMPLE1_PE_R2</td><td><a href="https://raw.githubusercontent.com/nf-core/test-datasets/viralrecon/illumina/amplicon/sample1_R2.fastq.gz">https://raw.githubusercontent.com/nf-core/test-datasets/viralrecon/illumina/amplicon/sample1_R2.fastq.gz</a></td></tr>
+<tr><td>SAMPLE2_PE_R1</td><td><a href="https://raw.githubusercontent.com/nf-core/test-datasets/viralrecon/illumina/amplicon/sample2_R1.fastq.gz">https://raw.githubusercontent.com/nf-core/test-datasets/viralrecon/illumina/amplicon/sample2_R1.fastq.gz</a></td></tr>
+<tr><td>SAMPLE2_PE_R2</td><td><a href="https://raw.githubusercontent.com/nf-core/test-datasets/viralrecon/illumina/amplicon/sample2_R2.fastq.gz">https://raw.githubusercontent.com/nf-core/test-datasets/viralrecon/illumina/amplicon/sample2_R2.fastq.gz</a></td></tr>
+</table>
+  </section>
+  <section class="panel">
     <h2>Downloads</h2>
     <ul><li><a href="files/validation_report.json">validation report</a></li>
 <li><a href="files/provenance.json">provenance</a></li>

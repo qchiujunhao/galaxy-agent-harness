@@ -260,6 +260,121 @@ def md_to_html(markdown: str) -> str:
     return "\n".join(parts)
 
 
+def load_json_artifact(source_dir: Path, entry: dict[str, Any], field: str) -> dict[str, Any] | None:
+    value = entry.get(field)
+    if not value:
+        return None
+    path = source_dir / str(value)
+    if not path.is_file():
+        return None
+    try:
+        loaded = json.loads(path.read_text(encoding="utf-8"))
+    except Exception:
+        return None
+    if isinstance(loaded, dict):
+        return loaded
+    return None
+
+
+def link_or_text(value: Any) -> str:
+    text = str(value or "")
+    escaped = html.escape(text)
+    if text.startswith(("http://", "https://")):
+        return f'<a href="{escaped}">{escaped}</a>'
+    return escaped
+
+
+def compact_json(value: Any) -> str:
+    return json.dumps(value, sort_keys=True, default=str)
+
+
+def has_display_value(value: Any) -> bool:
+    return value is not None and value != ""
+
+
+def validation_summary_html(data: dict[str, Any] | None) -> str:
+    if not data:
+        return "<p>No validation report was parsed for this entry.</p>"
+
+    status = html.escape(str(data.get("status") or "unknown"))
+    profile = html.escape(str(data.get("profile") or "unknown"))
+    checks = data.get("checks") if isinstance(data.get("checks"), list) else []
+    warnings = data.get("warnings") if isinstance(data.get("warnings"), list) else []
+
+    parts = [
+        '<table class="summary-table">',
+        f"<tr><th>Status</th><td>{status}</td></tr>",
+        f"<tr><th>Profile</th><td>{profile}</td></tr>",
+        f"<tr><th>Checks</th><td>{len(checks)}</td></tr>",
+        "</table>",
+    ]
+
+    if checks:
+        rows = []
+        for check in checks:
+            if isinstance(check, dict):
+                name = html.escape(str(check.get("name") or "check"))
+                check_status = html.escape(str(check.get("status") or "unknown"))
+                details = {
+                    key: value
+                    for key, value in check.items()
+                    if key not in {"name", "status"} and has_display_value(value)
+                }
+                detail_text = html.escape(compact_json(details)) if details else ""
+                rows.append(f"<tr><td>{name}</td><td>{check_status}</td><td>{detail_text}</td></tr>")
+        parts.append("<h3>Checks</h3>")
+        parts.append("<table><tr><th>Name</th><th>Status</th><th>Details</th></tr>")
+        parts.extend(rows)
+        parts.append("</table>")
+
+    if warnings:
+        parts.append("<h3>Warnings</h3>")
+        parts.append("<ul>")
+        for warning in warnings:
+            parts.append(f"<li>{html.escape(str(warning))}</li>")
+        parts.append("</ul>")
+
+    return "\n".join(parts)
+
+
+def provenance_summary_html(data: dict[str, Any] | None) -> str:
+    if not data:
+        return "<p>No provenance report was parsed for this entry.</p>"
+
+    rows = []
+    for key in ["execution_surface", "created", "source_url", "source_ref", "galaxy_history_url"]:
+        value = data.get(key)
+        if has_display_value(value):
+            rows.append(f"<tr><th>{html.escape(key)}</th><td>{link_or_text(value)}</td></tr>")
+    parts = ["<table class=\"summary-table\">", *rows, "</table>"] if rows else []
+
+    tool_ids = data.get("tool_ids")
+    if isinstance(tool_ids, dict) and tool_ids:
+        parts.append("<h3>Galaxy Tools</h3>")
+        parts.append("<table><tr><th>Name</th><th>Tool ID</th></tr>")
+        for name, tool_id in sorted(tool_ids.items()):
+            parts.append(f"<tr><td>{html.escape(str(name))}</td><td>{html.escape(str(tool_id))}</td></tr>")
+        parts.append("</table>")
+
+    fallbacks = data.get("fallbacks")
+    if isinstance(fallbacks, list) and fallbacks:
+        parts.append("<h3>Fallbacks</h3>")
+        parts.append("<ul>")
+        for fallback in fallbacks:
+            parts.append(f"<li>{html.escape(str(fallback))}</li>")
+        parts.append("</ul>")
+
+    input_urls = data.get("input_urls")
+    if isinstance(input_urls, dict) and input_urls:
+        parts.append("<h3>Input Sources</h3>")
+        parts.append("<table><tr><th>Name</th><th>URL</th></tr>")
+        for name, url in sorted(input_urls.items()):
+            parts.append(f"<tr><td>{html.escape(str(name))}</td><td>{link_or_text(url)}</td></tr>")
+        parts.append("</table>")
+
+    return "\n".join(parts) if parts else "<p>No displayable provenance fields were found.</p>"
+
+
 def status_label(entry: dict[str, Any]) -> str:
     public = "public" if entry.get("galaxy_history_public") else "private"
     importable = "importable" if entry.get("galaxy_history_importable") else "not importable"
@@ -559,6 +674,8 @@ def write_detail_page(workflows_dir: Path, docs_dir: Path, entry: dict[str, Any]
 
     source_dir = workflows_dir / str(entry["entry_dir"])
     readme_path = source_dir / str(entry.get("readme_file") or "README.md")
+    validation_report = load_json_artifact(source_dir, entry, "validation_file")
+    provenance_report = load_json_artifact(source_dir, entry, "provenance_file")
     readme_html = ""
     if readme_path.is_file():
         readme_html = md_to_html(readme_path.read_text(encoding="utf-8"))
@@ -607,6 +724,14 @@ def write_detail_page(workflows_dir: Path, docs_dir: Path, entry: dict[str, Any]
   <section class="panel">
     <h2>Entry README</h2>
     {readme_html}
+  </section>
+  <section class="panel">
+    <h2>Validation Summary</h2>
+    {validation_summary_html(validation_report)}
+  </section>
+  <section class="panel">
+    <h2>Provenance Summary</h2>
+    {provenance_summary_html(provenance_report)}
   </section>
   <section class="panel">
     <h2>Downloads</h2>

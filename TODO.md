@@ -28,6 +28,7 @@ Last updated: 2026-05-23
 - `bioartifact` is useful for artifact validation. The Galaxy DESeq2 raw table is headerless and includes rows with missing p-values; a normalized finite-row validation copy passes the current `de_table` contract.
 - A workflow entry/package validator now checks metadata, artifact references, validation/provenance JSON, public/importable metadata, and obvious credential or private-path leaks.
 - A static-site consistency check can verify committed `site/` and `docs/` files against `workflows/` metadata without rewriting the site.
+- Static workflow detail pages now render validation and provenance summaries directly, including checks, tool ids, fallbacks, and input source URLs when present.
 
 ## Direction Decision
 
@@ -440,7 +441,7 @@ Evidence policy:
 
 ## Phase 9: Design Completion Estimate
 
-Current completion against the original `design.md`: about 85%.
+Current completion against the original `design.md`: about 86%.
 
 Target completion after Phase 3: done.
 
