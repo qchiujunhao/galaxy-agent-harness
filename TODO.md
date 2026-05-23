@@ -12,8 +12,9 @@ Last updated: 2026-05-11
 - A live `/galaxy-reproduce` acceptance test ran DESeq2 on usegalaxy.org and passed.
 - Live test evidence is stored under ignored `local/plugin_tests/` directories and should not be published.
 - The live test used BioBlend directly, not `galaxy-cli`.
-- `galaxy-cli` exists in a sibling development checkout, but it is not installed on `PATH` in this shell.
-- Running `galaxy-cli` from source currently fails in this shell because `click` is missing.
+- `galaxy-cli` 1.0.2 is installed in the repo-local `.venv`; use `.venv/bin/galaxy-cli` or activate the venv.
+- `galaxy-cli config test` succeeds against usegalaxy.org with the current environment credentials.
+- A private `galaxy-cli` smoke history was created on 2026-05-23: https://usegalaxy.org/histories/view?id=bbd44e69cb8906b53497c24c3a2df506
 - `bioartifact` exists in a sibling development checkout and can run from source with `PYTHONPATH=/path/to/bioartifact/src`.
 - `bioartifact` is useful for artifact validation, but the current Galaxy DESeq2 output needs either header normalization or `bioartifact` DE-table alias support before the `de_table` contract passes.
 
@@ -61,22 +62,21 @@ python3 scripts/check_structure.py
 
 Goal: make `galaxy-cli` the real execution path.
 
-- [ ] Decide install source:
-  - preferred: `python3 -m pip install galaxy-cli`
-  - local development: `python3 -m pip install -e /path/to/cli-galaxy/galaxy-src/agent-harness`
-- [ ] Verify the executable:
+- [x] Decide install source:
+  - current: repo-local venv with `python -m pip install galaxy-cli`
+  - local development option: `python -m pip install -e /path/to/cli-galaxy/galaxy-src/agent-harness`
+- [x] Verify the executable:
 
 ```bash
-which galaxy-cli
-galaxy-cli --version
+.venv/bin/galaxy-cli --version
 ```
 
-- [ ] Configure Galaxy credentials through environment variables:
+- [x] Configure Galaxy credentials through environment variables:
 
 ```bash
 export GALAXY_URL="https://usegalaxy.org"
 export GALAXY_API_KEY="..."
-galaxy-cli config test
+.venv/bin/galaxy-cli config test
 ```
 
 - [ ] Copy or install the `galaxy-cli` skill so future Codex sessions can see it:
@@ -95,10 +95,12 @@ galaxy-cli config test
 Acceptance check:
 
 ```bash
-galaxy-cli history create "galaxy-analysis-plugin cli smoke"
+.venv/bin/galaxy-cli history create "galaxy-analysis-plugin cli smoke 2026-05-23"
 ```
 
-The command must return JSON with a history id.
+Status: passed. The command returned history id `bbd44e69cb8906b53497c24c3a2df506`.
+
+Galaxy history link: https://usegalaxy.org/histories/view?id=bbd44e69cb8906b53497c24c3a2df506
 
 ## Phase 2: Re-run the DESeq2 Acceptance Test Through `galaxy-cli`
 
@@ -394,7 +396,7 @@ Tests to keep:
 
 - [x] Structure check for plugin files.
 - [x] Plugin load check in fresh Codex session.
-- [ ] `galaxy-cli` availability check.
+- [x] `galaxy-cli` availability check.
 - [ ] `bioartifact` availability check.
 - [ ] Offline docs consistency check.
 - [ ] Live `galaxy-cli` DESeq2 acceptance test.
@@ -423,10 +425,9 @@ The last 10% is polish, broader task-family coverage, deeper validation, and hos
 
 ## Immediate Next Tasks
 
-1. Install or expose `galaxy-cli` in this environment.
-2. Re-run the `Intro-to-DGE` acceptance test using only `galaxy-cli`.
-3. Download the DESeq2 result table and test `bioartifact` against it.
-4. Decide whether to normalize Galaxy DE tables in this repo or add alias support to `bioartifact`.
-5. Add a generic workflow acceptance test outside the current named profiles.
-6. Add a fresh acceptance report under `local/plugin_tests/fair_cli_session/`.
-7. Create the first real public website entry after a `galaxy-cli` run passes validation.
+1. Re-run the `Intro-to-DGE` acceptance test using only `galaxy-cli`.
+2. Download the DESeq2 result table and test `bioartifact` against it.
+3. Decide whether to normalize Galaxy DE tables in this repo or add alias support to `bioartifact`.
+4. Add a generic workflow acceptance test outside the current named profiles.
+5. Add a fresh acceptance report under `local/plugin_tests/fair_cli_session/`.
+6. Create the first real public website entry after a `galaxy-cli` run passes validation.

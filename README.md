@@ -111,22 +111,31 @@ If your Codex build exposes local plugin installation in the UI, you can also in
 
 The plugin is a method layer; live Galaxy runs use `galaxy-cli` as the canonical execution surface.
 
-Preferred installation:
+Use a repo-local virtual environment:
 
 ```bash
-python3 -m pip install galaxy-cli
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install galaxy-cli
 ```
 
-Local development installation when working from a Galaxy checkout:
+This avoids system Python protections such as Homebrew's externally managed environment policy. Do not use `--break-system-packages`.
+
+Local development installation when working from a Galaxy checkout, after activating the venv:
 
 ```bash
-python3 -m pip install -e /path/to/cli-galaxy/galaxy-src/agent-harness
+python -m pip install -e /path/to/cli-galaxy/galaxy-src/agent-harness
 ```
 
 Verify the executable:
 
 ```bash
-command -v galaxy-cli
+.venv/bin/galaxy-cli --version
+```
+
+If the venv is activated, this should also work:
+
+```bash
 galaxy-cli --version
 ```
 
