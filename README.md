@@ -239,6 +239,12 @@ Validate workflow entries before publishing or submitting:
 python3 plugins/galaxy-analysis-plugin/scripts/validate_workflow_package.py
 ```
 
+Validate slash-command prompt contracts:
+
+```bash
+python3 plugins/galaxy-analysis-plugin/scripts/check_command_contracts.py
+```
+
 Check that committed `site/` and `docs/` outputs still match `workflows/` metadata:
 
 ```bash
@@ -543,6 +549,7 @@ Run the scaffold check:
 ```bash
 cd plugins/galaxy-analysis-plugin
 python3 scripts/check_structure.py
+python3 scripts/check_command_contracts.py
 ```
 
 If a workflow package fails validation, inspect the missing files listed by the validation report. A publishable package generally needs `workflow.ga`, `workflow.svg` or image fallback, `metadata.yaml`, `README.md`, and recorded validation status.

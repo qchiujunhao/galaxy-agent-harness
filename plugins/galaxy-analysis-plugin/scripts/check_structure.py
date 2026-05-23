@@ -26,6 +26,7 @@ REQUIRED_FILES = [
     "guides/galaxy-cli-execution.md",
     "guides/workflow-submission.md",
     "guides/workflow-site-format.md",
+    "scripts/check_command_contracts.py",
     "scripts/check_site_consistency.py",
     "scripts/create_workflow_entry.py",
     "scripts/generate_workflow_site.py",
@@ -85,6 +86,7 @@ def main() -> int:
                 errors.append(f"skill does not reference {rel}")
 
     for script_name in [
+        "scripts/check_command_contracts.py",
         "scripts/check_site_consistency.py",
         "scripts/create_workflow_entry.py",
         "scripts/generate_workflow_site.py",

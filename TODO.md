@@ -29,6 +29,7 @@ Last updated: 2026-05-23
 - A workflow entry/package validator now checks metadata, artifact references, validation/provenance JSON, public/importable metadata, and obvious credential or private-path leaks.
 - A static-site consistency check can verify committed `site/` and `docs/` files against `workflows/` metadata without rewriting the site.
 - Static workflow detail pages now render validation and provenance summaries directly, including checks, tool ids, fallbacks, and input source URLs when present.
+- An offline slash-command contract check now validates all seven command prompt files against expected routing, safety, and output policies.
 
 ## Direction Decision
 
@@ -265,6 +266,7 @@ General workflow requirement:
 - [x] `/galaxy-upload-workflow` command prompt exists.
 - [x] `/galaxy-list` command prompt exists.
 - [x] Structure check validates command frontmatter and `$ARGUMENTS` handling.
+- [x] Offline command contract check validates all seven command files.
 - [ ] Test all seven in a fresh Codex session.
 
 ### `/galaxy-list`
@@ -426,6 +428,7 @@ Tests to keep:
 - [x] Plugin load check in fresh Codex session.
 - [x] `galaxy-cli` availability check.
 - [x] `bioartifact` availability check.
+- [x] Offline slash-command contract check.
 - [x] Offline docs consistency check.
 - [x] Live `galaxy-cli` DESeq2 acceptance test.
 - [x] Public-history toggle test when publishing the DESeq2 entry to the public website.
@@ -441,7 +444,7 @@ Evidence policy:
 
 ## Phase 9: Design Completion Estimate
 
-Current completion against the original `design.md`: about 86%.
+Current completion against the original `design.md`: about 87%.
 
 Target completion after Phase 3: done.
 
@@ -463,6 +466,7 @@ Finished enough for public testing:
 - External non-Galaxy reproduction examples from Nextflow and Snakemake repositories.
 - Workflow entry/package validation for public-site readiness checks.
 - Offline static-site consistency checking.
+- Offline slash-command contract checking.
 
 Not finished yet:
 
