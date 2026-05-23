@@ -1,0 +1,34 @@
+id: "wf_20260523_intro-to-dge-deseq2-reproduction"
+title: "Intro to DGE DESeq2 reproduction"
+slug: "wf-20260523-intro-to-dge-deseq2-reproduction"
+task_family: "rnaseq_differential_expression"
+workflow_class: "rnaseq_differential_expression"
+validation_profile: "rnaseq_differential_expression"
+source_type: "github_repository"
+source_ref: "190d303ad44c33d2d64e013ebe34837e73c3f332"
+source_url: "https://github.com/hbctraining/Intro-to-DGE"
+galaxy_instance: "https://usegalaxy.org"
+galaxy_history_url: "https://usegalaxy.org/histories/view?id=bbd44e69cb8906b520c2ac86da470003"
+galaxy_history_id: "bbd44e69cb8906b520c2ac86da470003"
+galaxy_history_public: false
+galaxy_history_importable: false
+submitted_by: ""
+submission_date: "2026-05-23"
+created: "2026-05-23"
+updated: "2026-05-23"
+status: "pass"
+review_status: "draft"
+validation_status: "pass"
+execution_surface: "galaxy-cli"
+workflow_file: null
+workflow_image: null
+thumbnail_image: null
+readme_file: "README.md"
+validation_file: "validation_report.json"
+provenance_file: "provenance.json"
+tags:
+  - "rnaseq"
+  - "differential-expression"
+  - "deseq2"
+  - "galaxy-cli"
+summary: "Galaxy CLI reproduction of the Intro-to-DGE count-matrix differential-expression workflow with DESeq2 and bioartifact validation."

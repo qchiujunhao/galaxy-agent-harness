@@ -1,1 +1,6 @@
-{}
+{
+  "deseq2": 1,
+  "differential-expression": 1,
+  "galaxy-cli": 1,
+  "rnaseq": 1
+}

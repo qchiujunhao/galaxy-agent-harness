@@ -1,0 +1,85 @@
+{
+  "status": "pass",
+  "profile": "rnaseq_differential_expression",
+  "created_at": "2026-05-23T04:57:47.235609+00:00",
+  "galaxy_history_url": "https://usegalaxy.org/histories/view?id=bbd44e69cb8906b520c2ac86da470003",
+  "galaxy_history_id": "bbd44e69cb8906b520c2ac86da470003",
+  "tool_id": "toolshed.g2.bx.psu.edu/repos/iuc/deseq2/deseq2/2.11.40.8+galaxy2",
+  "job_id": "bbd44e69cb8906b564432cfe370df579",
+  "checks": [
+    {
+      "name": "galaxy_history_created",
+      "status": "pass",
+      "details": {
+        "history_id": "bbd44e69cb8906b520c2ac86da470003"
+      }
+    },
+    {
+      "name": "inputs_uploaded",
+      "status": "pass",
+      "details": {
+        "sample_count": 8,
+        "sample_sheet_id": "f9cad7b01a4721351085ab574fafdb35"
+      }
+    },
+    {
+      "name": "collection_order",
+      "status": "pass",
+      "details": {
+        "sample_order": [
+          "KO1",
+          "KO2",
+          "KO3",
+          "KO4",
+          "WT1",
+          "WT2",
+          "WT3",
+          "WT4"
+        ],
+        "collection_id": "1bc813c15642b5fd"
+      }
+    },
+    {
+      "name": "deseq2_job",
+      "status": "pass",
+      "details": {
+        "job_id": "bbd44e69cb8906b564432cfe370df579",
+        "tool_id": "toolshed.g2.bx.psu.edu/repos/iuc/deseq2/deseq2/2.11.40.8+galaxy2"
+      }
+    },
+    {
+      "name": "result_table",
+      "status": "pass",
+      "details": {
+        "id": "f9cad7b01a4721351f790a52bb713318",
+        "name": "DESeq2 result file on dataset 9-17 and collection 18",
+        "extension": "tabular",
+        "history_content_type": "dataset",
+        "state": "ok",
+        "file_size": 4889011,
+        "genome_build": "?",
+        "data_type": "galaxy.datatypes.tabular.Tabular",
+        "visible": true,
+        "misc_blurb": "47,729 lines 7 columns"
+      }
+    },
+    {
+      "name": "bioartifact_de_table_contract",
+      "status": "pass",
+      "details": {
+        "validation_copy": "deseq2_results.de_table_contract.tsv",
+        "contract": "de_table"
+      }
+    },
+    {
+      "name": "raw_de_table_contract",
+      "status": "warning",
+      "details": {
+        "raw_result": "deseq2_results.tsv",
+        "passed": false,
+        "reason": "Galaxy DESeq2 download has no header and includes rows with missing p-values; a normalized finite-row copy was used for the strict contract."
+      }
+    }
+  ],
+  "local_evidence": "Detailed command traces and downloaded tables are retained under ignored local/plugin_tests/fair_cli_session/."
+}

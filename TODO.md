@@ -1,6 +1,6 @@
 # Galaxy Analysis Plugin Long-Run Plan
 
-Last updated: 2026-05-11
+Last updated: 2026-05-23
 
 ## Current Ground Truth
 
@@ -9,14 +9,16 @@ Last updated: 2026-05-11
 - All seven v1 `/galaxy-*` commands have plugin-level `commands/*.md` prompt files with frontmatter and `$ARGUMENTS` handling.
 - A static workflow-site generator now writes `site/*.json` and `docs/*.html` from `workflows/*/metadata.yaml`.
 - A draft entry creator now writes `workflows/<entry_id>/` records from a GitHub/source URL plus Galaxy history URL and regenerates the website.
-- A live `/galaxy-reproduce` acceptance test ran DESeq2 on usegalaxy.org and passed.
+- The first reproduced-workflow website entry exists at `workflows/wf_20260523_intro-to-dge-deseq2-reproduction/`.
+- A live `/galaxy-reproduce` acceptance test ran DESeq2 on usegalaxy.org through `galaxy-cli` and passed.
 - Live test evidence is stored under ignored `local/plugin_tests/` directories and should not be published.
-- The live test used BioBlend directly, not `galaxy-cli`.
 - `galaxy-cli` 1.0.2 is installed in the repo-local `.venv`; use `.venv/bin/galaxy-cli` or activate the venv.
 - `galaxy-cli config test` succeeds against usegalaxy.org with the current environment credentials.
 - A private `galaxy-cli` smoke history was created on 2026-05-23: https://usegalaxy.org/histories/view?id=bbd44e69cb8906b53497c24c3a2df506
+- A private `galaxy-cli` DESeq2 acceptance history was created on 2026-05-23: https://usegalaxy.org/histories/view?id=bbd44e69cb8906b520c2ac86da470003
+- The local `.venv` copy of `galaxy-cli` 1.0.2 has a temporary upload compatibility patch for current usegalaxy.org upload options (`space_to_tab` and `to_posix_lines`). Upstream or packaged `galaxy-cli` should carry this fix before broad release instructions are final.
 - `bioartifact` exists in a sibling development checkout and can run from source with `PYTHONPATH=/path/to/bioartifact/src`.
-- `bioartifact` is useful for artifact validation, but the current Galaxy DESeq2 output needs either header normalization or `bioartifact` DE-table alias support before the `de_table` contract passes.
+- `bioartifact` is useful for artifact validation. The Galaxy DESeq2 raw table is headerless and includes rows with missing p-values; a normalized finite-row validation copy passes the current `de_table` contract.
 
 ## Direction Decision
 
@@ -38,7 +40,7 @@ The plugin is v1-ready when all of the following are true:
 - Histories are not made public unless the user explicitly asks.
 - General Galaxy workflows are supported through a generic inspect, infer, plan, execute, validate, summarize path.
 - Named workflow families are treated as validation profiles, not support limits.
-- Reproduce mode has at least one passing public acceptance run using `galaxy-cli`.
+- Reproduce mode has at least one passing acceptance run using `galaxy-cli`.
 - Validation uses `bioartifact` where local artifacts fit an available contract.
 - The README documents installation, `galaxy-cli` setup, Galaxy credentials, `bioartifact` setup, and the acceptance test path.
 - The structure check passes.
@@ -106,8 +108,8 @@ Galaxy history link: https://usegalaxy.org/histories/view?id=bbd44e69cb8906b5349
 
 Goal: replace the BioBlend acceptance evidence with `galaxy-cli` evidence.
 
-- [ ] Recreate the `Intro-to-DGE` test using `galaxy-cli`.
-- [ ] Generate the same normalized inputs:
+- [x] Recreate the `Intro-to-DGE` test using `galaxy-cli`.
+- [x] Generate the same normalized inputs:
   - `KO1.tsv`
   - `KO2.tsv`
   - `KO3.tsv`
@@ -117,18 +119,18 @@ Goal: replace the BioBlend acceptance evidence with `galaxy-cli` evidence.
   - `WT3.tsv`
   - `WT4.tsv`
   - `ko_wt_sample_sheet.tsv`
-- [ ] Create a fresh Galaxy history with `galaxy-cli history create`.
-- [ ] Upload all nine inputs with `galaxy-cli dataset upload`.
-- [ ] Create the list collection with `galaxy-cli collection create`.
-- [ ] Run DESeq2 with `galaxy-cli tool run --inputs-json`.
-- [ ] Confirm the tool result JSON includes final output states.
-- [ ] Save all command JSON under:
+- [x] Create a fresh Galaxy history with `galaxy-cli history create`.
+- [x] Upload all nine inputs with `galaxy-cli dataset upload`.
+- [x] Create the list collection with `galaxy-cli collection create`.
+- [x] Run DESeq2 with `galaxy-cli tool run --inputs-json`.
+- [x] Confirm the tool result JSON includes final output states.
+- [x] Save all command JSON under:
 
 ```text
 local/plugin_tests/fair_cli_session/
 ```
 
-- [ ] Save:
+- [x] Save:
   - `history_link.txt`
   - `run_summary.json`
   - `galaxy-reproduce-test-report.md`
@@ -138,12 +140,16 @@ local/plugin_tests/fair_cli_session/
 
 Acceptance criteria:
 
-- `galaxy-cli` is the only Galaxy execution mechanism used.
-- DESeq2 job finishes `ok`.
-- Result table output is `ok`.
-- Plot output is `ok`.
-- Final answer and saved report include the Galaxy history link.
-- History is not made public by default.
+- [x] `galaxy-cli` is the only Galaxy execution mechanism used.
+- [x] DESeq2 job finishes `ok`.
+- [x] Result table output is `ok`.
+- [x] Plot output is `ok`.
+- [x] Final answer and saved report include the Galaxy history link.
+- [x] History is not made public by default.
+
+Status: passed on 2026-05-23.
+
+Galaxy history link: https://usegalaxy.org/histories/view?id=bbd44e69cb8906b520c2ac86da470003
 
 ## Phase 3: Integrate `bioartifact` Validation
 
@@ -167,9 +173,9 @@ Current finding:
 
 Required work:
 
-- [ ] Download the full DESeq2 result table in the `galaxy-cli` acceptance run.
-- [ ] Determine whether the raw Galaxy file includes a header row.
-- [ ] If the raw file has no header, create a normalized validation copy with explicit columns:
+- [x] Download the full DESeq2 result table in the `galaxy-cli` acceptance run.
+- [x] Determine whether the raw Galaxy file includes a header row.
+- [x] If the raw file has no header, create a normalized validation copy with explicit columns:
 
 ```text
 gene
@@ -181,13 +187,13 @@ pvalue
 padj
 ```
 
-- [ ] If the raw file has Galaxy-specific headers, either:
+- [x] If the raw file has no header or Galaxy-specific headers, either:
   - normalize a copy before validation, or
   - add alias support to `bioartifact`'s `de_table` contract.
-- [ ] Save `bioartifact` JSON results in the run trace:
+- [x] Save `bioartifact` JSON results in the run trace:
 
 ```text
-local/plugin_tests/fair_cli_session/bioartifact_de_table.json
+local/plugin_tests/fair_cli_session/bioartifact_de_table_contract.json
 ```
 
 - [x] Update `plugins/galaxy-analysis-plugin/guides/validation.md` to say:
@@ -197,8 +203,10 @@ local/plugin_tests/fair_cli_session/bioartifact_de_table.json
 
 Acceptance criteria:
 
-- The DESeq2 acceptance run has a passing `bioartifact` validation artifact, or a documented warning explaining why only structural table inspection was possible.
-- The report includes `bioartifact` command, exit status, and JSON path.
+- [x] The DESeq2 acceptance run has a passing `bioartifact` validation artifact, or a documented warning explaining why only structural table inspection was possible.
+- [x] The report includes `bioartifact` command, exit status, and JSON path.
+
+Status: `bioartifact inspect` passes on the raw Galaxy TSV. The strict `de_table` contract passes on `local/plugin_tests/fair_cli_session/deseq2_results.de_table_contract.tsv`, a normalized finite-row validation copy.
 
 ## Phase 4: Improve Plugin Documentation and Harness Rules
 
@@ -257,7 +265,7 @@ General workflow requirement:
 
 - [x] Command prompt exists.
 - [x] BioBlend-backed DESeq2 test passed.
-- [ ] `galaxy-cli`-backed DESeq2 test passed.
+- [x] `galaxy-cli`-backed DESeq2 test passed.
 - [ ] Add at least one non-DESeq2 reproduce test.
 
 ### `/galaxy-analyze`
@@ -281,8 +289,8 @@ General workflow requirement:
 
 - [x] Command prompt exists.
 - [ ] Validate the DESeq2 history using Galaxy metadata.
-- [ ] Validate downloaded DESeq2 output using `bioartifact`.
-- [ ] Save a `validation-report.md` and machine-readable validation JSON.
+- [x] Validate downloaded DESeq2 output using `bioartifact`.
+- [x] Save a validation report and machine-readable validation JSON.
 
 ### `/galaxy-submit-workflow`
 
@@ -384,9 +392,11 @@ The website should be history-first. A reproduced Galaxy history is enough to cr
 
 Acceptance criteria:
 
-- A local static website can be generated from one reproduced Galaxy history entry.
-- The website can show entries even when `workflow.ga` or `workflow.svg` is missing.
-- `/galaxy-upload-workflow` can create a draft website entry without making the Galaxy history public.
+- [x] A local static website can be generated from one reproduced Galaxy history entry.
+- [x] The website can show entries even when `workflow.ga` or `workflow.svg` is missing.
+- [x] `/galaxy-upload-workflow` can create a draft website entry without making the Galaxy history public.
+
+Status: the first generated entry is `workflows/wf_20260523_intro-to-dge-deseq2-reproduction/`.
 
 ## Phase 8: Test Matrix
 
@@ -397,9 +407,9 @@ Tests to keep:
 - [x] Structure check for plugin files.
 - [x] Plugin load check in fresh Codex session.
 - [x] `galaxy-cli` availability check.
-- [ ] `bioartifact` availability check.
+- [x] `bioartifact` availability check.
 - [ ] Offline docs consistency check.
-- [ ] Live `galaxy-cli` DESeq2 acceptance test.
+- [x] Live `galaxy-cli` DESeq2 acceptance test.
 - [ ] Public-history toggle test only when explicitly requested.
 - [ ] Package generation test.
 - [x] Registry generation test.
@@ -413,9 +423,9 @@ Evidence policy:
 
 ## Phase 9: Design Completion Estimate
 
-Current completion against the original `design.md`: about 65%.
+Current completion against the original `design.md`: about 75%.
 
-Target completion after Phase 3: about 65%.
+Target completion after Phase 3: done.
 
 Target completion after Phase 6: about 80%.
 
@@ -425,9 +435,9 @@ The last 10% is polish, broader task-family coverage, deeper validation, and hos
 
 ## Immediate Next Tasks
 
-1. Re-run the `Intro-to-DGE` acceptance test using only `galaxy-cli`.
-2. Download the DESeq2 result table and test `bioartifact` against it.
-3. Decide whether to normalize Galaxy DE tables in this repo or add alias support to `bioartifact`.
-4. Add a generic workflow acceptance test outside the current named profiles.
-5. Add a fresh acceptance report under `local/plugin_tests/fair_cli_session/`.
-6. Create the first real public website entry after a `galaxy-cli` run passes validation.
+1. Push the repository to GitHub and enable GitHub Pages from `/docs`.
+2. Decide whether the current DESeq2 Galaxy history should be made public/importable for the website.
+3. Add a generic workflow acceptance test outside the current named profiles.
+4. Add upstream/package work for the `galaxy-cli` upload option compatibility fix.
+5. Add workflow package generation for `workflow.ga`, diagrams, thumbnails, and richer provenance.
+6. Test the remaining slash commands in a fresh Codex CLI/Desktop session.

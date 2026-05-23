@@ -1,11 +1,49 @@
 {
-  "entries": [],
+  "entries": [
+    {
+      "created": "2026-05-23",
+      "execution_surface": "galaxy-cli",
+      "galaxy_history_importable": false,
+      "galaxy_history_public": false,
+      "galaxy_history_url": "https://usegalaxy.org/histories/view?id=bbd44e69cb8906b520c2ac86da470003",
+      "galaxy_instance": "https://usegalaxy.org",
+      "id": "wf_20260523_intro-to-dge-deseq2-reproduction",
+      "page_url": "workflows/wf-20260523-intro-to-dge-deseq2-reproduction/",
+      "review_status": "draft",
+      "slug": "wf-20260523-intro-to-dge-deseq2-reproduction",
+      "source_ref": "190d303ad44c33d2d64e013ebe34837e73c3f332",
+      "source_type": "github_repository",
+      "source_url": "https://github.com/hbctraining/Intro-to-DGE",
+      "summary": "Galaxy CLI reproduction of the Intro-to-DGE count-matrix differential-expression workflow with DESeq2 and bioartifact validation.",
+      "tags": [
+        "rnaseq",
+        "differential-expression",
+        "deseq2",
+        "galaxy-cli"
+      ],
+      "task_family": "rnaseq_differential_expression",
+      "title": "Intro to DGE DESeq2 reproduction",
+      "updated": "2026-05-23",
+      "validation_profile": "rnaseq_differential_expression",
+      "validation_status": "pass",
+      "workflow_class": "rnaseq_differential_expression"
+    }
+  ],
   "summary": {
-    "entry_count": 0,
-    "generated_at": "2026-05-23T04:23:24+00:00",
-    "tags": {},
-    "validation_profiles": {},
-    "validation_statuses": {},
+    "entry_count": 1,
+    "generated_at": "2026-05-23T05:01:17+00:00",
+    "tags": {
+      "deseq2": 1,
+      "differential-expression": 1,
+      "galaxy-cli": 1,
+      "rnaseq": 1
+    },
+    "validation_profiles": {
+      "rnaseq_differential_expression": 1
+    },
+    "validation_statuses": {
+      "pass": 1
+    },
     "warning_count": 0
   }
 }

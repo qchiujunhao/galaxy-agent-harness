@@ -1,10 +1,19 @@
 {
   "summary": {
-    "entry_count": 0,
-    "generated_at": "2026-05-23T04:23:24+00:00",
-    "tags": {},
-    "validation_profiles": {},
-    "validation_statuses": {},
+    "entry_count": 1,
+    "generated_at": "2026-05-23T05:01:17+00:00",
+    "tags": {
+      "deseq2": 1,
+      "differential-expression": 1,
+      "galaxy-cli": 1,
+      "rnaseq": 1
+    },
+    "validation_profiles": {
+      "rnaseq_differential_expression": 1
+    },
+    "validation_statuses": {
+      "pass": 1
+    },
     "warning_count": 0
   },
   "warnings": []

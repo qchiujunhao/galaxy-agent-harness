@@ -8,7 +8,7 @@ Workflow coverage is general by default. The named workflow families in the guid
 
 ## Status
 
-The initial scaffold is finished and validated.
+The initial scaffold is finished and validated. A live `galaxy-cli` acceptance run has reproduced the `hbctraining/Intro-to-DGE` count-matrix DESeq2 workflow on usegalaxy.org.
 
 Implemented:
 
@@ -21,6 +21,7 @@ Implemented:
 - task-family and validation guides
 - report and workflow-submission templates
 - static workflow-site generator
+- first reproduced-workflow website entry under `workflows/`
 - structure check script
 
 Not implemented yet:
@@ -139,6 +140,8 @@ If the venv is activated, this should also work:
 galaxy-cli --version
 ```
 
+Known compatibility note: `galaxy-cli` 1.0.2 may send older upload option values to current usegalaxy.org. If upload fails with `Parameter 'space_to_tab': an invalid option ('No')`, use a newer `galaxy-cli` build that contains the upload fix or apply the temporary venv-local patch described in Troubleshooting. Keep that patch out of committed source.
+
 If `galaxy-cli` is unavailable or lacks a required operation, the plugin should stop at the planning boundary or record an explicit fallback reason.
 
 ### Step 5: Configure Galaxy Credentials
@@ -166,7 +169,7 @@ Preferred installation depends on where `bioartifact` is published in your envir
 
 ```bash
 export PYTHONPATH="/path/to/bioartifact/src:$PYTHONPATH"
-python3 -m bioartifact --help
+.venv/bin/python -m bioartifact --help
 ```
 
 `bioartifact` does not replace Galaxy job-state validation. Use it together with Galaxy metadata, output inventory, and task-specific checks.
@@ -456,7 +459,9 @@ This plugin does not include a Galaxy backend. Install `galaxy-cli`, configure G
 If `galaxy-cli` is missing:
 
 ```bash
-python3 -m pip install galaxy-cli
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install galaxy-cli
 ```
 
 If a source checkout fails with `ModuleNotFoundError: No module named 'click'`, install the checkout's Python dependencies or install the package in editable mode from the correct project directory:
@@ -471,13 +476,35 @@ If credentials are missing, set `GALAXY_URL` and `GALAXY_API_KEY`, then run:
 galaxy-cli config test
 ```
 
+If uploads to usegalaxy.org fail with this error:
+
+```text
+Parameter 'space_to_tab': an invalid option ('No') was selected
+```
+
+you are likely using `galaxy-cli` 1.0.2 against a Galaxy server that now requires different upload form values. Until a fixed `galaxy-cli` release is installed, a temporary repo-local workaround is to patch only the installed package inside `.venv`:
+
+```bash
+python - <<'PY'
+from pathlib import Path
+target = next(Path(".venv").glob("lib/python*/site-packages/galaxy_cli/utils/galaxy_backend.py"))
+text = target.read_text()
+text = text.replace('"files_0|space_to_tab": "No"', '"files_0|space_to_tab": "Yes"')
+text = text.replace('"files_0|to_posix_lines": "No"', '"files_0|to_posix_lines": "Yes"')
+target.write_text(text)
+print(target)
+PY
+```
+
+This modifies only the ignored local venv. Do not commit `.venv/`.
+
 ### `bioartifact` is unavailable
 
 Install or expose `bioartifact` before local artifact validation. If using a source checkout:
 
 ```bash
 export PYTHONPATH="/path/to/bioartifact/src:$PYTHONPATH"
-python3 -m bioartifact --help
+.venv/bin/python -m bioartifact --help
 ```
 
 ### Validation fails
@@ -493,7 +520,7 @@ If a workflow package fails validation, inspect the missing files listed by the 
 
 ## Next Steps
 
-1. Add a workflow package generator for `workflow.ga`, `metadata.yaml`, `README.md`, and validation reports.
+1. Add a workflow package generator for `workflow.ga`, `workflow.svg`, thumbnails, and richer provenance.
 2. Test all slash commands in a fresh Codex CLI/Desktop session.
-3. Add `/galaxy-upload-workflow` draft entry creation from a completed history.
-4. Expand task-family guides and validation depth.
+3. Add more reproduced workflows beyond the DESeq2 acceptance run.
+4. Publish the repository and enable GitHub Pages from `/docs`.
