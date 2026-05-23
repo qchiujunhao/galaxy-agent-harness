@@ -26,6 +26,8 @@ Last updated: 2026-05-23
 - The local `.venv` copy of `galaxy-cli` 1.0.2 has a temporary upload compatibility patch for current usegalaxy.org upload options (`space_to_tab` and `to_posix_lines`). Upstream or packaged `galaxy-cli` should carry this fix before broad release instructions are final.
 - `bioartifact` exists in a sibling development checkout and can run from source with `PYTHONPATH=/path/to/bioartifact/src`.
 - `bioartifact` is useful for artifact validation. The Galaxy DESeq2 raw table is headerless and includes rows with missing p-values; a normalized finite-row validation copy passes the current `de_table` contract.
+- A workflow entry/package validator now checks metadata, artifact references, validation/provenance JSON, public/importable metadata, and obvious credential or private-path leaks.
+- A static-site consistency check can verify committed `site/` and `docs/` files against `workflows/` metadata without rewriting the site.
 
 ## Direction Decision
 
@@ -332,10 +334,10 @@ workflows/
 
 Tasks:
 
-- [ ] Define package id allocation.
-- [ ] Define metadata schema and validation script.
+- [x] Define package id allocation.
+- [x] Define metadata schema and validation script.
 - [ ] Generate package from a completed Galaxy history.
-- [ ] Include the Galaxy history link and publication status.
+- [x] Include the Galaxy history link and publication status.
 - [ ] Include execution surface metadata:
   - `galaxy-cli` version
   - Galaxy URL
@@ -345,12 +347,12 @@ Tasks:
 - [ ] Include validation metadata:
   - Galaxy job/output validation
   - `bioartifact` contract results where available
-- [ ] Add package validation to `scripts/check_structure.py` or a new script.
+- [x] Add package validation to `scripts/check_structure.py` or a new script.
 
 Acceptance criteria:
 
-- A reproduced workflow can be packaged locally without a PR.
-- Package validation can fail with actionable messages.
+- [x] A reproduced history-first workflow entry can be packaged locally without a PR.
+- [x] Package validation can fail with actionable messages.
 
 ## Phase 7: Static Reproduced Workflow Website
 
@@ -423,7 +425,7 @@ Tests to keep:
 - [x] Plugin load check in fresh Codex session.
 - [x] `galaxy-cli` availability check.
 - [x] `bioartifact` availability check.
-- [ ] Offline docs consistency check.
+- [x] Offline docs consistency check.
 - [x] Live `galaxy-cli` DESeq2 acceptance test.
 - [x] Public-history toggle test when publishing the DESeq2 entry to the public website.
 - [ ] Package generation test.
@@ -438,7 +440,7 @@ Evidence policy:
 
 ## Phase 9: Design Completion Estimate
 
-Current completion against the original `design.md`: about 82%.
+Current completion against the original `design.md`: about 85%.
 
 Target completion after Phase 3: done.
 
@@ -458,14 +460,15 @@ Finished enough for public testing:
 - `bioartifact` validation where the downloaded artifacts fit available contracts.
 - Generic workflow support beyond the original named workflow families.
 - External non-Galaxy reproduction examples from Nextflow and Snakemake repositories.
+- Workflow entry/package validation for public-site readiness checks.
+- Offline static-site consistency checking.
 
 Not finished yet:
 
 - Upstream or packaged `galaxy-cli` upload compatibility fix for current usegalaxy.org upload options.
 - `galaxy-cli` support for nested multiple-data tool inputs, so MultiQC can run without direct API fallback.
-- Full workflow package generation with `workflow.ga`, diagrams, thumbnails, provenance, and package validation.
+- Full workflow package generation with `workflow.ga`, diagrams, thumbnails, and richer provenance.
 - Fresh-session slash-command test coverage for every command.
-- Offline documentation consistency checks.
 - More diverse external non-Galaxy examples, especially alignment, variant, and RNA-seq/count workflows.
 
 The remaining work is not a blocker for keeping the repository public, but it is required before calling the project v1-complete or paper-ready.

@@ -116,3 +116,17 @@ Generated outputs:
 - `docs/workflows/<slug>/index.html` for each entry
 
 The generator supports history-first entries. A missing `workflow.ga`, `workflow.svg`, or `thumbnail.png` should produce a warning or missing download, not block site generation.
+
+Validate website/package entries with:
+
+```bash
+python3 plugins/galaxy-analysis-plugin/scripts/validate_workflow_package.py
+```
+
+Use default validation for public website entries. It requires metadata, README, validation report, and provenance, while allowing missing workflow export and diagram artifacts. Use `--strict-package` only when preparing a complete review package that must contain `workflow.ga`, `workflow.svg`, and `thumbnail.png`.
+
+Check that committed generated outputs match the workflow metadata without rewriting the site:
+
+```bash
+python3 plugins/galaxy-analysis-plugin/scripts/check_site_consistency.py
+```

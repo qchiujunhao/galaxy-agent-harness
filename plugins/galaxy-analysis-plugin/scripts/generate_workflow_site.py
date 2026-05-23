@@ -31,6 +31,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--workflows-dir", default="workflows", help="Workflow entry directory under root")
     parser.add_argument("--site-dir", default="site", help="Machine-readable site data directory under root")
     parser.add_argument("--docs-dir", default="docs", help="Static HTML output directory under root")
+    parser.add_argument("--generated-at", help="Override generated_at timestamp for deterministic checks")
     parser.add_argument("--strict", action="store_true", help="Fail when an entry has validation warnings")
     return parser.parse_args()
 
@@ -270,7 +271,7 @@ def write_json(path: Path, data: Any) -> None:
     path.write_text(json.dumps(data, indent=2, sort_keys=True, default=str) + "\n", encoding="utf-8")
 
 
-def build_summary(entries: list[dict[str, Any]], warnings: list[str]) -> dict[str, Any]:
+def build_summary(entries: list[dict[str, Any]], warnings: list[str], generated_at: str | None = None) -> dict[str, Any]:
     tag_counts: dict[str, int] = {}
     profile_counts: dict[str, int] = {}
     validation_counts: dict[str, int] = {}
@@ -284,7 +285,7 @@ def build_summary(entries: list[dict[str, Any]], warnings: list[str]) -> dict[st
         validation_counts[status] = validation_counts.get(status, 0) + 1
 
     return {
-        "generated_at": dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat(),
+        "generated_at": generated_at or dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat(),
         "entry_count": len(entries),
         "warning_count": len(warnings),
         "validation_statuses": validation_counts,
@@ -319,9 +320,14 @@ def index_record(entry: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def write_site_data(site_dir: Path, entries: list[dict[str, Any]], warnings: list[str]) -> None:
+def write_site_data(
+    site_dir: Path,
+    entries: list[dict[str, Any]],
+    warnings: list[str],
+    generated_at: str | None = None,
+) -> None:
     records = [index_record(entry) for entry in entries]
-    summary = build_summary(entries, warnings)
+    summary = build_summary(entries, warnings, generated_at)
     write_json(site_dir / "index.json", {"summary": summary, "entries": records})
     write_json(site_dir / "tags.json", summary["tags"])
     write_json(site_dir / "validation_profiles.json", summary["validation_profiles"])
@@ -626,7 +632,7 @@ def main() -> int:
     docs_dir = root / args.docs_dir
 
     entries, warnings = load_entries(workflows_dir)
-    write_site_data(site_dir, entries, warnings)
+    write_site_data(site_dir, entries, warnings, args.generated_at)
     write_docs(workflows_dir, docs_dir, entries)
 
     for warning in warnings:

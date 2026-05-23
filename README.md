@@ -23,13 +23,14 @@ Implemented:
 - task-family and validation guides
 - report and workflow-submission templates
 - static workflow-site generator
-- first reproduced-workflow website entry under `workflows/`
+- reproduced-workflow website entries under `workflows/`
+- workflow entry/package validator
 - structure check script
 
 Not implemented yet:
 
 - direct Galaxy backend code
-- automated workflow package generator
+- full workflow export/diagram package generation
 
 ## Quick Start
 
@@ -230,6 +231,26 @@ Generate machine-readable site data and GitHub Pages-compatible HTML:
 
 ```bash
 python3 plugins/galaxy-analysis-plugin/scripts/generate_workflow_site.py
+```
+
+Validate workflow entries before publishing or submitting:
+
+```bash
+python3 plugins/galaxy-analysis-plugin/scripts/validate_workflow_package.py
+```
+
+Check that committed `site/` and `docs/` outputs still match `workflows/` metadata:
+
+```bash
+python3 plugins/galaxy-analysis-plugin/scripts/check_site_consistency.py
+```
+
+For a strict review package that must include `workflow.ga`, `workflow.svg`, and `thumbnail.png`:
+
+```bash
+python3 plugins/galaxy-analysis-plugin/scripts/validate_workflow_package.py \
+  --entry workflows/<entry_id> \
+  --strict-package
 ```
 
 Create a draft website entry from a reproduced GitHub-to-Galaxy run:
