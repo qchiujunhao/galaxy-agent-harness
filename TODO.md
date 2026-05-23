@@ -407,7 +407,11 @@ Acceptance criteria:
 - [x] `/galaxy-upload-workflow` can create a draft website entry without making the Galaxy history public.
 - [x] Public website entries require public/importable Galaxy histories.
 
-Status: the first generated entry is `workflows/wf_20260523_intro-to-dge-deseq2-reproduction/`.
+Status: three generated entries are live:
+
+- `workflows/wf_20260523_intro-to-dge-deseq2-reproduction/`
+- `workflows/wf_20260523_nf-core-demo-nextflow-qc-reproduction/`
+- `workflows/wf_20260523_tdayris-fair-fastqc-multiqc-snakemake-qc-reproduction/`
 
 ## Phase 8: Test Matrix
 
@@ -434,15 +438,37 @@ Evidence policy:
 
 ## Phase 9: Design Completion Estimate
 
-Current completion against the original `design.md`: about 75%.
+Current completion against the original `design.md`: about 82%.
 
 Target completion after Phase 3: done.
 
-Target completion after Phase 6: about 80%.
+Target completion after Phase 6: not done. The website-first publishing path moved ahead of full workflow package generation.
 
-Target completion after Phase 7: about 90%.
+Target completion after Phase 7: mostly done.
 
-The last 10% is polish, broader task-family coverage, deeper validation, and host-native command support where Codex exposes it.
+Current release status: good enough to remain public now and start the public-aging window for a future JOSS submission, but not feature-complete.
+
+Finished enough for public testing:
+
+- Public GitHub repository and GitHub Pages site.
+- Root README installation instructions, including repo-local `.venv` usage.
+- `galaxy-cli` as the intended Galaxy execution surface.
+- Live Galaxy execution with returned history links.
+- Public/importable website histories when publishing to the public site.
+- `bioartifact` validation where the downloaded artifacts fit available contracts.
+- Generic workflow support beyond the original named workflow families.
+- External non-Galaxy reproduction examples from Nextflow and Snakemake repositories.
+
+Not finished yet:
+
+- Upstream or packaged `galaxy-cli` upload compatibility fix for current usegalaxy.org upload options.
+- `galaxy-cli` support for nested multiple-data tool inputs, so MultiQC can run without direct API fallback.
+- Full workflow package generation with `workflow.ga`, diagrams, thumbnails, provenance, and package validation.
+- Fresh-session slash-command test coverage for every command.
+- Offline documentation consistency checks.
+- More diverse external non-Galaxy examples, especially alignment, variant, and RNA-seq/count workflows.
+
+The remaining work is not a blocker for keeping the repository public, but it is required before calling the project v1-complete or paper-ready.
 
 ## Candidate Reproduction Examples
 
