@@ -6,6 +6,8 @@ The plugin does not implement a second Galaxy backend. It gives the agent a shar
 
 Workflow coverage is general by default. The named workflow families in the guides are validation profiles with stronger defaults, not the full set of workflows the plugin can attempt.
 
+Public workflow site: https://qchiujunhao.github.io/galaxy-agent-harness/
+
 ## Status
 
 The initial scaffold is finished and validated. A live `galaxy-cli` acceptance run has reproduced the `hbctraining/Intro-to-DGE` count-matrix DESeq2 workflow on usegalaxy.org.
@@ -266,6 +268,12 @@ To host the website on GitHub Pages after the repository is public:
 5. Save and wait for GitHub Pages to publish the site.
 
 The committed `docs/.nojekyll` file keeps GitHub Pages from applying Jekyll processing.
+
+Current public site:
+
+```text
+https://qchiujunhao.github.io/galaxy-agent-harness/
+```
 
 ## Manual Development Fallback
 

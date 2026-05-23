@@ -10,6 +10,8 @@ Last updated: 2026-05-23
 - A static workflow-site generator now writes `site/*.json` and `docs/*.html` from `workflows/*/metadata.yaml`.
 - A draft entry creator now writes `workflows/<entry_id>/` records from a GitHub/source URL plus Galaxy history URL and regenerates the website.
 - The first reproduced-workflow website entry exists at `workflows/wf_20260523_intro-to-dge-deseq2-reproduction/`.
+- The public GitHub repository is live at https://github.com/qchiujunhao/galaxy-agent-harness.
+- GitHub Pages is enabled from `main` `/docs` and built at https://qchiujunhao.github.io/galaxy-agent-harness/.
 - A live `/galaxy-reproduce` acceptance test ran DESeq2 on usegalaxy.org through `galaxy-cli` and passed.
 - Live test evidence is stored under ignored `local/plugin_tests/` directories and should not be published.
 - `galaxy-cli` 1.0.2 is installed in the repo-local `.venv`; use `.venv/bin/galaxy-cli` or activate the venv.
@@ -376,6 +378,7 @@ The website should be history-first. A reproduced Galaxy history is enough to cr
   - collect source, validation, and provenance metadata
   - create or update `workflows/<entry_id>/`
   - regenerate static site index data
+- [x] Publish the static site through GitHub Pages from `/docs`.
 - [ ] Add `/galaxy-upload-workflow` PR publishing support when requested.
 - [x] Define minimum website entry metadata:
   - id
@@ -435,9 +438,9 @@ The last 10% is polish, broader task-family coverage, deeper validation, and hos
 
 ## Immediate Next Tasks
 
-1. Push the repository to GitHub and enable GitHub Pages from `/docs`.
-2. Decide whether the current DESeq2 Galaxy history should be made public/importable for the website.
-3. Add a generic workflow acceptance test outside the current named profiles.
-4. Add upstream/package work for the `galaxy-cli` upload option compatibility fix.
-5. Add workflow package generation for `workflow.ga`, diagrams, thumbnails, and richer provenance.
-6. Test the remaining slash commands in a fresh Codex CLI/Desktop session.
+1. Decide whether the current DESeq2 Galaxy history should be made public/importable for the website.
+2. Add a generic workflow acceptance test outside the current named profiles.
+3. Add upstream/package work for the `galaxy-cli` upload option compatibility fix.
+4. Add workflow package generation for `workflow.ga`, diagrams, thumbnails, and richer provenance.
+5. Test the remaining slash commands in a fresh Codex CLI/Desktop session.
+6. Add more website entries once additional reproductions pass validation.
