@@ -1,0 +1,34 @@
+id: "wf_20260523_tdayris-fair-fastqc-multiqc-snakemake-qc-reproduction"
+title: "tdayris fair_fastqc_multiqc Snakemake QC reproduction"
+slug: "wf-20260523-tdayris-fair-fastqc-multiqc-snakemake-qc-reproduction"
+task_family: "general_galaxy_workflow"
+workflow_class: "general_galaxy_workflow"
+validation_profile: "general_galaxy_workflow"
+source_type: "github_repository"
+source_ref: "c757bf9a72279e62399effb52fd8794eb6bdf3d7"
+source_url: "https://github.com/tdayris/fair_fastqc_multiqc"
+galaxy_instance: "https://usegalaxy.org"
+galaxy_history_url: "https://usegalaxy.org/histories/view?id=bbd44e69cb8906b5ee6e744aaffc562c"
+galaxy_history_id: "bbd44e69cb8906b5ee6e744aaffc562c"
+galaxy_history_public: true
+galaxy_history_importable: true
+submitted_by: ""
+submission_date: "2026-05-23"
+created: "2026-05-23"
+updated: "2026-05-23"
+status: "pass"
+review_status: "tested"
+validation_status: "pass"
+execution_surface: "galaxy-cli"
+workflow_file: null
+workflow_image: null
+thumbnail_image: null
+readme_file: "README.md"
+validation_file: "validation_report.json"
+provenance_file: "provenance.json"
+tags:
+  - "external-source"
+  - "snakemake"
+  - "fastq-qc"
+  - "fastqc"
+summary: "External Snakemake FASTQ QC workflow reproduced in Galaxy with FastQC and MultiQC using small public test data."

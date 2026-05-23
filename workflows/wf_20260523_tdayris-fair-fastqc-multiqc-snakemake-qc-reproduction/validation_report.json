@@ -1,0 +1,44 @@
+{
+  "checks": [
+    {
+      "name": "external_non_galaxy_source",
+      "source_url": "https://github.com/tdayris/fair_fastqc_multiqc",
+      "status": "pass"
+    },
+    {
+      "name": "bioartifact_paired_fastq",
+      "sample": "sac_a",
+      "status": "pass"
+    },
+    {
+      "name": "bioartifact_fastq",
+      "sample": "sac_b",
+      "status": "pass"
+    },
+    {
+      "dataset_count": 3,
+      "name": "galaxy_uploads_ok",
+      "status": "pass"
+    },
+    {
+      "job_count": 3,
+      "name": "fastqc_ok",
+      "status": "pass"
+    },
+    {
+      "name": "multiqc_ok",
+      "output_id": "f9cad7b01a472135ce5889ad8fdc73c6",
+      "status": "pass"
+    },
+    {
+      "name": "history_public_importable",
+      "status": "pass"
+    }
+  ],
+  "galaxy_history_url": "https://usegalaxy.org/histories/view?id=bbd44e69cb8906b5ee6e744aaffc562c",
+  "profile": "general_galaxy_workflow",
+  "status": "pass",
+  "warnings": [
+    "MultiQC used a narrow Galaxy API fallback because current galaxy-cli does not bind nested multiple-data inputs for this wrapper."
+  ]
+}

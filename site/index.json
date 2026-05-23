@@ -27,22 +27,85 @@
       "validation_profile": "rnaseq_differential_expression",
       "validation_status": "pass",
       "workflow_class": "rnaseq_differential_expression"
+    },
+    {
+      "created": "2026-05-23",
+      "execution_surface": "galaxy-cli",
+      "galaxy_history_importable": true,
+      "galaxy_history_public": true,
+      "galaxy_history_url": "https://usegalaxy.org/histories/view?id=bbd44e69cb8906b5bbf93ef93172ec2c",
+      "galaxy_instance": "https://usegalaxy.org",
+      "id": "wf_20260523_nf-core-demo-nextflow-qc-reproduction",
+      "page_url": "workflows/wf-20260523-nf-core-demo-nextflow-qc-reproduction/",
+      "review_status": "tested",
+      "slug": "wf-20260523-nf-core-demo-nextflow-qc-reproduction",
+      "source_ref": "45904cb9d12db3d89900e6c479fe604ef71b297b",
+      "source_type": "github_repository",
+      "source_url": "https://github.com/nf-core/demo",
+      "summary": "External Nextflow nf-core/demo FASTQ QC pipeline reproduced in Galaxy with FastQC, Seqtk trim, and MultiQC.",
+      "tags": [
+        "external-source",
+        "nextflow",
+        "fastq-qc",
+        "nf-core"
+      ],
+      "task_family": "general_galaxy_workflow",
+      "title": "nf-core/demo Nextflow QC reproduction",
+      "updated": "2026-05-23",
+      "validation_profile": "general_galaxy_workflow",
+      "validation_status": "pass",
+      "workflow_class": "general_galaxy_workflow"
+    },
+    {
+      "created": "2026-05-23",
+      "execution_surface": "galaxy-cli",
+      "galaxy_history_importable": true,
+      "galaxy_history_public": true,
+      "galaxy_history_url": "https://usegalaxy.org/histories/view?id=bbd44e69cb8906b5ee6e744aaffc562c",
+      "galaxy_instance": "https://usegalaxy.org",
+      "id": "wf_20260523_tdayris-fair-fastqc-multiqc-snakemake-qc-reproduction",
+      "page_url": "workflows/wf-20260523-tdayris-fair-fastqc-multiqc-snakemake-qc-reproduction/",
+      "review_status": "tested",
+      "slug": "wf-20260523-tdayris-fair-fastqc-multiqc-snakemake-qc-reproduction",
+      "source_ref": "c757bf9a72279e62399effb52fd8794eb6bdf3d7",
+      "source_type": "github_repository",
+      "source_url": "https://github.com/tdayris/fair_fastqc_multiqc",
+      "summary": "External Snakemake FASTQ QC workflow reproduced in Galaxy with FastQC and MultiQC using small public test data.",
+      "tags": [
+        "external-source",
+        "snakemake",
+        "fastq-qc",
+        "fastqc"
+      ],
+      "task_family": "general_galaxy_workflow",
+      "title": "tdayris fair_fastqc_multiqc Snakemake QC reproduction",
+      "updated": "2026-05-23",
+      "validation_profile": "general_galaxy_workflow",
+      "validation_status": "pass",
+      "workflow_class": "general_galaxy_workflow"
     }
   ],
   "summary": {
-    "entry_count": 1,
-    "generated_at": "2026-05-23T05:12:41+00:00",
+    "entry_count": 3,
+    "generated_at": "2026-05-23T06:12:53+00:00",
     "tags": {
       "deseq2": 1,
       "differential-expression": 1,
+      "external-source": 2,
+      "fastq-qc": 2,
+      "fastqc": 1,
       "galaxy-cli": 1,
-      "rnaseq": 1
+      "nextflow": 1,
+      "nf-core": 1,
+      "rnaseq": 1,
+      "snakemake": 1
     },
     "validation_profiles": {
+      "general_galaxy_workflow": 2,
       "rnaseq_differential_expression": 1
     },
     "validation_statuses": {
-      "pass": 1
+      "pass": 3
     },
     "warning_count": 0
   }

@@ -1,18 +1,25 @@
 {
   "summary": {
-    "entry_count": 1,
-    "generated_at": "2026-05-23T05:12:41+00:00",
+    "entry_count": 3,
+    "generated_at": "2026-05-23T06:12:53+00:00",
     "tags": {
       "deseq2": 1,
       "differential-expression": 1,
+      "external-source": 2,
+      "fastq-qc": 2,
+      "fastqc": 1,
       "galaxy-cli": 1,
-      "rnaseq": 1
+      "nextflow": 1,
+      "nf-core": 1,
+      "rnaseq": 1,
+      "snakemake": 1
     },
     "validation_profiles": {
+      "general_galaxy_workflow": 2,
       "rnaseq_differential_expression": 1
     },
     "validation_statuses": {
-      "pass": 1
+      "pass": 3
     },
     "warning_count": 0
   },

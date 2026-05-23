@@ -1,6 +1,12 @@
 {
   "deseq2": 1,
   "differential-expression": 1,
+  "external-source": 2,
+  "fastq-qc": 2,
+  "fastqc": 1,
   "galaxy-cli": 1,
-  "rnaseq": 1
+  "nextflow": 1,
+  "nf-core": 1,
+  "rnaseq": 1,
+  "snakemake": 1
 }

@@ -1,0 +1,52 @@
+{
+  "checks": [
+    {
+      "name": "external_non_galaxy_source",
+      "source_url": "https://github.com/nf-core/demo",
+      "status": "pass"
+    },
+    {
+      "name": "bioartifact_paired_fastq",
+      "samples": [
+        "SAMPLE1_PE",
+        "SAMPLE2_PE"
+      ],
+      "status": "pass"
+    },
+    {
+      "dataset_count": 4,
+      "name": "galaxy_uploads_ok",
+      "status": "pass"
+    },
+    {
+      "job_count": 4,
+      "name": "fastqc_raw_ok",
+      "status": "pass"
+    },
+    {
+      "job_count": 4,
+      "name": "seqtk_trim_ok",
+      "status": "pass"
+    },
+    {
+      "job_count": 4,
+      "name": "fastqc_trimmed_ok",
+      "status": "pass"
+    },
+    {
+      "name": "multiqc_ok",
+      "output_id": "f9cad7b01a47213545b9f2582f0bd594",
+      "status": "pass"
+    },
+    {
+      "name": "history_public_importable",
+      "status": "pass"
+    }
+  ],
+  "galaxy_history_url": "https://usegalaxy.org/histories/view?id=bbd44e69cb8906b5bbf93ef93172ec2c",
+  "profile": "general_galaxy_workflow",
+  "status": "pass",
+  "warnings": [
+    "The first MultiQC submission through galaxy-cli did not bind the nested multiple-data input; a narrow Galaxy API fallback submitted the corrected MultiQC payload in the same history."
+  ]
+}

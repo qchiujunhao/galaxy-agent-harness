@@ -1,0 +1,22 @@
+{
+  "created": "2026-05-23",
+  "execution_surface": "galaxy-cli",
+  "fallbacks": [
+    "Galaxy API fallback for MultiQC nested multiple-data input.",
+    "Galaxy API fallback for published/importable flags."
+  ],
+  "galaxy_history_url": "https://usegalaxy.org/histories/view?id=bbd44e69cb8906b5bbf93ef93172ec2c",
+  "input_urls": {
+    "SAMPLE1_PE_R1": "https://raw.githubusercontent.com/nf-core/test-datasets/viralrecon/illumina/amplicon/sample1_R1.fastq.gz",
+    "SAMPLE1_PE_R2": "https://raw.githubusercontent.com/nf-core/test-datasets/viralrecon/illumina/amplicon/sample1_R2.fastq.gz",
+    "SAMPLE2_PE_R1": "https://raw.githubusercontent.com/nf-core/test-datasets/viralrecon/illumina/amplicon/sample2_R1.fastq.gz",
+    "SAMPLE2_PE_R2": "https://raw.githubusercontent.com/nf-core/test-datasets/viralrecon/illumina/amplicon/sample2_R2.fastq.gz"
+  },
+  "source_ref": "45904cb9d12db3d89900e6c479fe604ef71b297b",
+  "source_url": "https://github.com/nf-core/demo",
+  "tool_ids": {
+    "fastqc": "toolshed.g2.bx.psu.edu/repos/devteam/fastqc/fastqc/0.74+galaxy1",
+    "multiqc": "toolshed.g2.bx.psu.edu/repos/iuc/multiqc/multiqc/1.34+galaxy0",
+    "seqtk_trimfq": "toolshed.g2.bx.psu.edu/repos/iuc/seqtk/seqtk_trimfq/1.5+galaxy0"
+  }
+}

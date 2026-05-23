@@ -19,6 +19,10 @@ Last updated: 2026-05-23
 - `galaxy-cli config test` succeeds against usegalaxy.org with the current environment credentials.
 - A private `galaxy-cli` smoke history was created on 2026-05-23: https://usegalaxy.org/histories/view?id=bbd44e69cb8906b53497c24c3a2df506
 - A public/importable `galaxy-cli` DESeq2 acceptance history was created on 2026-05-23: https://usegalaxy.org/histories/view?id=bbd44e69cb8906b520c2ac86da470003
+- A public/importable external non-Galaxy `nf-core/demo` reproduction history was created on 2026-05-23: https://usegalaxy.org/histories/view?id=bbd44e69cb8906b5bbf93ef93172ec2c
+- A public/importable external non-Galaxy `tdayris/fair_fastqc_multiqc` reproduction history was created on 2026-05-23: https://usegalaxy.org/histories/view?id=bbd44e69cb8906b5ee6e744aaffc562c
+- The `nf-core/demo` run used `galaxy-cli` for uploads, FastQC, and Seqtk. MultiQC exposed a current `galaxy-cli` limitation for nested multiple-data tool inputs, so a narrow Galaxy API fallback was used and recorded in provenance.
+- The `tdayris/fair_fastqc_multiqc` run used `galaxy-cli` for uploads and FastQC. MultiQC exposed the same nested multiple-data limitation, so the same narrow Galaxy API fallback was used and recorded.
 - The local `.venv` copy of `galaxy-cli` 1.0.2 has a temporary upload compatibility patch for current usegalaxy.org upload options (`space_to_tab` and `to_posix_lines`). Upstream or packaged `galaxy-cli` should carry this fix before broad release instructions are final.
 - `bioartifact` exists in a sibling development checkout and can run from source with `PYTHONPATH=/path/to/bioartifact/src`.
 - `bioartifact` is useful for artifact validation. The Galaxy DESeq2 raw table is headerless and includes rows with missing p-values; a normalized finite-row validation copy passes the current `de_table` contract.
@@ -246,7 +250,7 @@ General workflow requirement:
 - [x] Add a generic `general_galaxy_workflow` path to the task-family guide.
 - [x] Make `/galaxy-reproduce` and `/galaxy-analyze` avoid refusing workflows only because no specialized profile exists.
 - [x] Reports must distinguish generic structural validation from specialized task-family validation.
-- [ ] Add at least one acceptance test outside the current named profiles.
+- [x] Add at least one acceptance test outside the current named profiles.
 
 ### Slash Command Files
 
@@ -271,7 +275,7 @@ General workflow requirement:
 - [x] Command prompt exists.
 - [x] BioBlend-backed DESeq2 test passed.
 - [x] `galaxy-cli`-backed DESeq2 test passed.
-- [ ] Add at least one non-DESeq2 reproduce test.
+- [x] Add at least one non-DESeq2 reproduce test.
 
 ### `/galaxy-analyze`
 
@@ -442,43 +446,53 @@ The last 10% is polish, broader task-family coverage, deeper validation, and hos
 
 ## Candidate Reproduction Examples
 
-Use these as the next website-entry candidates after the DESeq2 acceptance entry.
+Use external, non-Galaxy repositories as the next website-entry sources. GTN workflows are useful implementation references, but they are not acceptable as source examples for this track because they already start from Galaxy-native workflows.
 
-- [ ] GTN sequence quality control
-  - Source: https://github.com/galaxyproject/training-material/tree/main/topics/sequence-analysis/tutorials/quality-control
-  - Workflow: `topics/sequence-analysis/tutorials/quality-control/workflows/quality_control.ga`
-  - Inputs: paired FASTQ subsets from Zenodo `10.5281/zenodo.61771`
-  - Why: small, fast, general workflow; validates FastQC, Cutadapt, and MultiQC.
-  - Validation target: FASTQ structure, FastQC text/html outputs, MultiQC report.
-- [ ] GTN microbial variant calling
-  - Source: https://github.com/galaxyproject/training-material/tree/main/topics/variant-analysis/tutorials/microbial-variants
-  - Workflow: `topics/variant-analysis/tutorials/microbial-variants/workflows/microbial_variant_calling.ga`
-  - Inputs: paired mutant FASTQs plus wildtype reference files from Zenodo `10.5281/zenodo.582600`
-  - Why: useful non-RNA example with compact bacterial data and explicit VCF-style outputs.
-  - Validation target: Snippy job state, VCF output, tabular summary, optional `bioartifact valid_vcf`.
-- [ ] GTN ATAC-seq chr22 workflow
-  - Source: https://github.com/galaxyproject/training-material/tree/main/topics/epigenetics/tutorials/atac-seq
-  - Workflow: `topics/epigenetics/tutorials/atac-seq/workflows/main_workflow.ga`
-  - Inputs: chr22 paired FASTQs and CTCF peaks from Zenodo `10.5281/zenodo.3862793`, plus `chr22_genes.bed`
-  - Why: good epigenomics coverage; exercises paired FASTQs, alignment, duplicate marking, MACS2 peak calling, and signal visualization.
-  - Validation target: expected mapping-stat text, MACS2 narrowPeak/summit outputs, optional `bioartifact narrowpeak`.
-- [ ] GTN Scanpy PBMC3K clustering
-  - Source: https://github.com/galaxyproject/training-material/tree/main/topics/single-cell/tutorials/scrna-scanpy-pbmc3k
-  - Workflow: `topics/single-cell/tutorials/scrna-scanpy-pbmc3k/workflows/Clustering-3k-PBMC-with-Scanpy.ga`
-  - Inputs: barcodes, genes, and matrix files from Zenodo `10.5281/zenodo.3581213`
-  - Why: adds a single-cell website entry without requiring raw FASTQ preprocessing.
-  - Validation target: Scanpy output states, marker table, PNG/SVG plots, h5ad metadata inspection.
-- [ ] GTN RNA-seq reads to counts
-  - Source: https://github.com/galaxyproject/training-material/tree/main/topics/transcriptomics/tutorials/rna-seq-reads-to-counts
-  - Workflow: `topics/transcriptomics/tutorials/rna-seq-reads-to-counts/workflows/rna-seq-reads-to-counts.ga`
-  - Inputs: tutorial count/QC inputs from Figshare plus mm10 RefSeq BED
-  - Why: complements the current downstream DESeq2 entry with an upstream reads-to-counts transcriptomics workflow.
-  - Validation target: read QC, alignment/count outputs, MultiQC-style report where available.
+- [x] `nf-core/demo`
+  - Source: https://github.com/nf-core/demo
+  - Source type: Nextflow pipeline, not Galaxy.
+  - Upstream workflow: FastQC, Seqtk trim, MultiQC.
+  - Inputs: small public FASTQ files from the repository README/test data.
+  - Why: fast general workflow that proves the harness can translate a non-Galaxy pipeline into Galaxy tool execution.
+  - Validation target: `bioartifact paired_fastq`, Galaxy upload states, FastQC raw text/html outputs, Seqtk trimmed FASTQ outputs, MultiQC report if payload wiring succeeds.
+  - Status: reproduced in Galaxy and published on the workflow website.
+  - Galaxy history: https://usegalaxy.org/histories/view?id=bbd44e69cb8906b5bbf93ef93172ec2c
+  - Website entry: `workflows/wf_20260523_nf-core-demo-nextflow-qc-reproduction/`
+  - Note: MultiQC required a narrow Galaxy API fallback because current `galaxy-cli` did not bind nested multiple-data inputs for this wrapper.
+- [x] `tdayris/fair_fastqc_multiqc`
+  - Source: https://github.com/tdayris/fair_fastqc_multiqc
+  - Source type: Snakemake workflow, not Galaxy.
+  - Upstream workflow: FastQC, FastQ-Screen, SeqKit/SeqTK/fastq_utils/fastqinfo, MultiQC.
+  - Inputs: small FASTQ files from the `snakemake-workflows/ngs-test-data` submodule.
+  - Why: second external workflow-engine source with compact public data and a direct FASTQ QC surface.
+  - Validation target: `bioartifact paired_fastq` for `sac_a`, `bioartifact fastq` for `sac_b`, Galaxy upload states, FastQC text/html outputs, MultiQC report.
+  - Status: core FastQC/MultiQC subset reproduced in Galaxy and published on the workflow website.
+  - Galaxy history: https://usegalaxy.org/histories/view?id=bbd44e69cb8906b5ee6e744aaffc562c
+  - Website entry: `workflows/wf_20260523_tdayris-fair-fastqc-multiqc-snakemake-qc-reproduction/`
+  - Note: MultiQC required a narrow Galaxy API fallback because current `galaxy-cli` did not bind nested multiple-data inputs for this wrapper.
+- [ ] `datacarpentry/wrangling-genomics`
+  - Source: https://github.com/datacarpentry/wrangling-genomics
+  - Source type: command-line genomics lesson, not Galaxy.
+  - Candidate workflow: read QC, trimming, alignment/statistics, and small variant-calling style steps where compact public inputs are available.
+  - Why: exercises generic workflow inference from prose/tutorial commands rather than from a workflow engine.
+  - Validation target: FASTQ structure, SAM/BAM metadata where produced, tabular summaries, optional `bioartifact valid_vcf` if variant outputs are reproduced.
+- [ ] `griffithlab/rnaseq_tutorial`
+  - Source: https://github.com/griffithlab/rnaseq_tutorial
+  - Source type: RNA-seq tutorial and pipeline material, not Galaxy.
+  - Candidate workflow: one compact QC/counting or downstream expression-analysis subset, chosen only after confirming data size and public input availability.
+  - Why: adds RNA-seq coverage from a non-Galaxy tutorial source.
+  - Validation target: table structure, count matrix consistency, and `bioartifact de_table` only when the selected output fits the contract.
+- [ ] `nf-core/rnaseq`
+  - Source: https://github.com/nf-core/rnaseq
+  - Source type: production Nextflow pipeline, not Galaxy.
+  - Candidate workflow: a small test-data subset rather than the full pipeline.
+  - Why: later stress test for translating a richer non-Galaxy pipeline into Galaxy-backed reproduction.
+  - Validation target: staged by selected subset; likely FASTQ/QC/count artifacts first.
 
 ## Immediate Next Tasks
 
-1. Add a generic workflow acceptance test outside the current named profiles.
-2. Add upstream/package work for the `galaxy-cli` upload option compatibility fix.
+1. Add upstream/package work for the `galaxy-cli` upload option compatibility fix.
+2. Add `galaxy-cli` support for nested multiple-data tool inputs so MultiQC can run without a direct API fallback.
 3. Add workflow package generation for `workflow.ga`, diagrams, thumbnails, and richer provenance.
 4. Test the remaining slash commands in a fresh Codex CLI/Desktop session.
-5. Add more website entries once additional reproductions pass validation.
+5. Add more external non-Galaxy website entries once additional reproductions pass validation.
