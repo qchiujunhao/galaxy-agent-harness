@@ -30,6 +30,7 @@ Last updated: 2026-05-23
 - A static-site consistency check can verify committed `site/` and `docs/` files against `workflows/` metadata without rewriting the site.
 - Static workflow detail pages now render validation and provenance summaries directly, including checks, tool ids, fallbacks, and input source URLs when present.
 - An offline slash-command contract check now validates all seven command prompt files against expected routing, safety, and output policies.
+- A fresh ephemeral Codex CLI `/galaxy-list` smoke test confirmed local command-layer visibility and local `galaxy-cli`/`bioartifact` availability without running live Galaxy jobs. Evidence is under `local/plugin_tests/fresh_codex_galaxy_list_20260523/`.
 
 ## Direction Decision
 
@@ -267,7 +268,7 @@ General workflow requirement:
 - [x] `/galaxy-list` command prompt exists.
 - [x] Structure check validates command frontmatter and `$ARGUMENTS` handling.
 - [x] Offline command contract check validates all seven command files.
-- [ ] Test all seven in a fresh Codex session.
+- [ ] Test all seven in a fresh Codex session. Current evidence covers `/galaxy-list` in a fresh ephemeral CLI session; native autocomplete exposure remains host-dependent.
 
 ### `/galaxy-list`
 
