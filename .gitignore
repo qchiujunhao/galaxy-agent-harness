@@ -12,6 +12,8 @@ build/
 local/
 run_records/
 condition_summaries/
+TODO.md
+to-do.md
 
 # Galaxy/Codex local state and logs.
 .galaxy-cli/
