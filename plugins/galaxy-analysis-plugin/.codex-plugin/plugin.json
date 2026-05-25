@@ -1,7 +1,7 @@
 {
   "name": "galaxy-analysis-plugin",
   "version": "0.1.0",
-  "description": "A thin Codex plugin that guides Galaxy analyses through shared methodology and existing Galaxy execution skills.",
+  "description": "A Codex adapter for the agent-portable Galaxy Analysis Harness.",
   "author": {
     "name": "Galaxy Analysis Plugin Maintainers"
   },
@@ -16,7 +16,7 @@
   "interface": {
     "displayName": "Galaxy Analysis",
     "shortDescription": "Plan, run, explain, validate, and package Galaxy analyses.",
-    "longDescription": "Provides a shared Galaxy analysis harness for coding agents. The plugin keeps host code thin, loads command-specific methodology, and delegates real Galaxy operations to existing galaxy-cli skills.",
+    "longDescription": "Provides a shared Galaxy analysis harness for coding agents. This Codex adapter keeps host code thin, loads command-specific methodology, and delegates real Galaxy operations to galaxy-cli.",
     "developerName": "Galaxy Analysis Plugin Maintainers",
     "category": "Science",
     "capabilities": [
