@@ -1,452 +1,274 @@
 # Galaxy Agent Harness
 
-Galaxy Agent Harness is an agent-portable method layer for Galaxy analysis. It ships with a Codex plugin adapter today, but the reusable core is plain Markdown: a shared harness, slash-command prompts, command contracts, guides, templates, and an agent skill file that other coding agents can read.
+Make Galaxy analyses easier for coding agents to run, explain, validate, and publish.
 
-The harness does not implement a second Galaxy backend. It gives the agent a shared method, then delegates real Galaxy operations to `galaxy-cli`.
+Galaxy Agent Harness is a portable instruction layer for agents. It gives agents a shared operating method, slash-command prompts, validation guides, and report templates for Galaxy work. It does not replace Galaxy or implement a second Galaxy API backend. Live Galaxy execution goes through `galaxy-cli`.
 
-Use it from Codex, Claude Code, OpenCode, or any coding agent that can read local instruction files. Codex currently has the most complete packaged adapter in this repository; other hosts can use the same files through project skills, custom slash commands, or a direct bootstrap prompt.
-
-Workflow coverage is general by default. The named workflow families in the guides are validation profiles with stronger defaults, not the full set of workflows the plugin can attempt.
+Use it with Claude Code, OpenCode, Codex, or any agent that can read project files.
 
 Public workflow site: https://qchiujunhao.github.io/galaxy-agent-harness/
 
-## Status
-
-The initial scaffold is finished and validated. A live `galaxy-cli` acceptance run has reproduced the `hbctraining/Intro-to-DGE` count-matrix DESeq2 workflow on usegalaxy.org.
-
-Implemented:
-
-- reusable agent harness
-- agent skill instruction file
-- all v1 `/galaxy-*` slash-command prompt files
-- `/galaxy-*` command contracts
-- task-family and validation guides
-- report and workflow-submission templates
-- Codex local plugin adapter and marketplace entry
-- Codex plugin manifest
-- static workflow-site generator
-- reproduced-workflow website entries under `workflows/`
-- workflow entry/package validator
-- structure check script
-
-Out of scope today:
-
-- direct Galaxy backend code: the harness does not call the Galaxy API itself or replace `galaxy-cli`; agents should use `galaxy-cli` for live Galaxy work and record any fallback.
-- full workflow export/diagram package generation: history-first website entries work now, but automatic generation of complete review bundles with `workflow.ga`, `workflow.svg`, thumbnails, and richer provenance is still roadmap work.
-
-## Terminology
-
-- Agent harness: the reusable instructions in `plugins/galaxy-analysis-plugin/HARNESS.md`, `commands/`, `guides/`, and `templates/`.
-- Agent skill: `plugins/galaxy-analysis-plugin/skills/galaxy-analysis/SKILL.md`, a Markdown instruction entrypoint that tells an agent which harness and command files to load. This is not model training and not Galaxy code.
-- Codex skill: the same skill file when it is discovered through Codex's plugin system. The name is host-specific; the file itself is reusable.
-- Codex plugin adapter: the `.codex-plugin/plugin.json` and `.agents/plugins/marketplace.json` packaging that lets Codex discover the harness automatically.
-- Galaxy execution surface: `galaxy-cli`, which performs actual Galaxy uploads, history inspection, tool runs, output retrieval, and related operations.
-
 ## Quick Start
-
-### Prerequisites
-
-- a coding agent that can read project files, custom instructions, skills, or slash-command Markdown
-- Codex Desktop or a Codex build that supports local plugins, only if you want native Codex plugin installation
-- Python 3 for the validation script
-- PyYAML for workflow metadata parsing by local validation and static-site scripts
-- `galaxy-cli` if you want to run real Galaxy jobs
-- Galaxy credentials or API configuration for the target instance, if required by those execution tools
-
-### Step 1: Get the Repository
-
-Clone or copy this repository, then enter the repo root:
 
 ```bash
 git clone https://github.com/qchiujunhao/galaxy-agent-harness.git
 cd galaxy-agent-harness
+python3 install.py
 ```
 
-If you are already inside the repo root, continue to the next step.
-
-
-### Step 2: Check the Plugin Layout
-
-```bash
-cd plugins/galaxy-analysis-plugin
-python3 scripts/check_structure.py
-```
-
-Expected output:
+This installs the agent adapters and `galaxy-cli` into:
 
 ```text
-Galaxy Analysis Plugin structure check passed.
+~/.agents/galaxy-analysis/.venv/bin/galaxy-cli
 ```
 
-### Step 3: Install for Your Agent
+At the end of installation, the script offers to save Galaxy server/API credentials. A typical first install looks like this:
 
-Use the installer from the repository root:
+```text
+Configure Galaxy server/API credentials now? [Y/n]: y
+Galaxy profile name [default]: usegalaxy
+Galaxy URL [https://usegalaxy.org]:
+Galaxy API key (input hidden):
+Add another Galaxy instance? [y/N]: n
+```
+
+`[default]` means that if you press Enter without typing a profile name, the profile will be named `default`. In the example above, the user typed `usegalaxy`, so the saved profile is named `usegalaxy`.
+
+If you answer `n` to `Add another Galaxy instance?`, setup ends and the last configured profile becomes active.
+
+If you answer `y`, the installer repeats the same questions so you can add another server or another API key:
+
+```text
+Add another Galaxy instance? [y/N]: y
+Galaxy profile name [default]: eu
+Galaxy URL [https://usegalaxy.org]: https://usegalaxy.eu
+Galaxy API key (input hidden):
+Add another Galaxy instance? [y/N]: n
+```
+
+You can also configure credentials later:
 
 ```bash
-python3 install.py claude
+python3 install.py --configure-galaxy
+. "$HOME/.agents/galaxy-analysis/env"
+$HOME/.agents/galaxy-analysis/.venv/bin/galaxy-cli config test
 ```
 
-Use the agent name you want:
+`--configure-galaxy` can add multiple profiles one by one. For each profile it asks for:
+
+- profile name, for example `usegalaxy`, `usegalaxy-lab`, `eu`, `eu-backup-key`, or `private-lab`
+- Galaxy URL, for example `https://usegalaxy.org`
+- Galaxy API key
+
+On usegalaxy.org, create an API key from the Galaxy web UI:
+
+1. Log in to Galaxy.
+2. Open User -> Preferences.
+3. Open Manage API key.
+4. Create or copy the key.
+5. Paste it when `python3 install.py --configure-galaxy` asks for it.
+
+The key is saved to `~/.agents/galaxy-analysis/instances/<profile>.env` with file mode `600`. The active profile is also written to `~/.agents/galaxy-analysis/env`, which agents source before running `galaxy-cli`.
+
+For scripted setup, provide a single instance name:
+
+```bash
+python3 install.py --configure-galaxy --instance usegalaxy
+```
+
+Each profile is stored separately:
+
+```text
+~/.agents/galaxy-analysis/instances/usegalaxy.env
+~/.agents/galaxy-analysis/instances/usegalaxy-main.env
+~/.agents/galaxy-analysis/instances/usegalaxy-collab.env
+~/.agents/galaxy-analysis/instances/eu.env
+~/.agents/galaxy-analysis/instances/private-lab.env
+```
+
+Multiple API keys for the same Galaxy server are supported. Give each key a different profile name, even if the URL is the same:
+
+```text
+Configure Galaxy server/API credentials now? [Y/n]: y
+Galaxy profile name [default]: usegalaxy-main
+Galaxy URL [https://usegalaxy.org]:
+Galaxy API key (input hidden):
+Add another Galaxy instance? [y/N]: y
+Galaxy profile name [default]: usegalaxy-collab
+Galaxy URL [https://usegalaxy.org]:
+Galaxy API key (input hidden):
+Add another Galaxy instance? [y/N]: n
+```
+
+The most recently configured profile becomes active by updating:
+
+```text
+~/.agents/galaxy-analysis/env
+```
+
+Restart or reload your agent from any project folder, then try:
+
+```text
+/galaxy-list
+```
+
+If you only want command wrappers and do not want to install `galaxy-cli`, use the lighter install:
+
+```bash
+python3 install.py --skip-galaxy-cli
+```
+
+For unattended installs that should not ask setup questions:
+
+```bash
+python3 install.py --no-prompt
+```
+
+## What Install Does
+
+`python3 install.py` writes user-level adapter files by default, so the harness works when your agent is opened in another analysis project.
+
+| Agent | Installed files |
+| --- | --- |
+| Claude Code | `~/.claude/skills/galaxy-analysis/` and `~/.claude/commands/galaxy-*.md` |
+| OpenCode | `~/.config/opencode/skills/galaxy-analysis/` and `~/.config/opencode/commands/galaxy-*.md` |
+| Codex | `~/.codex/skills/galaxy-analysis/SKILL.md` |
+| Generic agents | `~/.agents/skills/galaxy-analysis/SKILL.md` |
+
+The installer also uses one user-level runtime for Galaxy control-plane tooling:
+
+```text
+~/.agents/galaxy-analysis/
+  .venv/bin/galaxy-cli
+  env
+  instances/<name>.env
+```
+
+Agents source `~/.agents/galaxy-analysis/env` when it exists, then run `~/.agents/galaxy-analysis/.venv/bin/galaxy-cli`.
+
+This is intentional. Analysis projects often have their own Python environments for notebooks, pipelines, or local tooling. The harness keeps Galaxy control-plane tooling separate so running a Galaxy analysis does not mutate the target project's environment.
+
+Credential handling:
+
+- `python3 install.py --configure-galaxy --instance <profile>` asks for Galaxy URL and API key.
+- Each profile is stored in `~/.agents/galaxy-analysis/instances/<profile>.env`.
+- The active profile is copied to `~/.agents/galaxy-analysis/env`.
+- To keep multiple API keys for the same Galaxy server, create multiple profile names with the same Galaxy URL.
+- Credential env files are created with mode `600`.
+- Use `python3 install.py --configure-galaxy --write-shell-profile` only if you want new terminals to source it automatically.
+- If a user pastes an API key into chat and explicitly asks an agent to save it, the agent should not echo it. It should save it to `~/.agents/galaxy-analysis/env` with mode `600`, or guide the user to run the configure command locally.
+
+Specific installs are available when you want only one adapter:
 
 ```bash
 python3 install.py claude
 python3 install.py opencode
-python3 install.py generic
 python3 install.py codex
+python3 install.py generic
 ```
 
-For Claude Code, the installer writes `.claude/skills/galaxy-analysis/` and `.claude/commands/galaxy-*.md` wrappers.
+To write adapters only into this repository instead of user-level folders:
 
-For OpenCode, the installer writes `.opencode/skills/galaxy-analysis/` and `.opencode/commands/galaxy-*.md` wrappers.
-
-For generic agents, the installer writes `.agents/galaxy-agent-harness.md`, a portable bootstrap instruction file that points the agent to the harness, skill, and command files.
-
-For Codex, the repository already includes the adapter files:
-
-```text
-.agents/plugins/marketplace.json
-plugins/galaxy-analysis-plugin/.codex-plugin/plugin.json
+```bash
+python3 install.py --scope project
 ```
 
-`python3 install.py codex` prints the local marketplace and config steps. Codex still requires enabling the local marketplace in the host, so that path has one host-level step outside the repository.
+Codex plugin support is also included through the local plugin adapter committed in this repository. `python3 install.py codex` prints the optional Codex marketplace setup steps.
 
-After installation, restart or reload the agent from the repository root and test:
+## Use
+
+List capabilities:
 
 ```text
 /galaxy-list
 ```
 
-You can also install the wrappers and `galaxy-cli` together:
-
-```bash
-python3 install.py claude --with-galaxy-cli
-```
-
-Use `--force` to overwrite previously generated wrapper files.
-
-### Step 4: Install `galaxy-cli`
-
-The harness is a method layer; live Galaxy runs use `galaxy-cli` as the canonical execution surface.
-
-Use a repo-local virtual environment:
-
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-python -m pip install -r requirements.txt
-python -m pip install galaxy-cli
-```
-
-This avoids system Python protections such as Homebrew's externally managed environment policy. Do not use `--break-system-packages`.
-
-Local development installation when working from a Galaxy checkout, after activating the venv:
-
-```bash
-python -m pip install -e /path/to/cli-galaxy/galaxy-src/agent-harness
-```
-
-Verify the executable:
-
-```bash
-.venv/bin/galaxy-cli --version
-```
-
-If the venv is activated, this should also work:
-
-```bash
-galaxy-cli --version
-```
-
-Known compatibility note: `galaxy-cli` 1.0.2 may send older upload option values to current usegalaxy.org. If upload fails with `Parameter 'space_to_tab': an invalid option ('No')`, use a newer `galaxy-cli` build that contains the upload fix or apply the temporary venv-local patch described in Troubleshooting. Keep that patch out of committed source.
-
-If `galaxy-cli` is unavailable or lacks a required operation, the plugin should stop at the planning boundary or record an explicit fallback reason.
-
-### Step 5: Configure Galaxy Credentials
-
-Set Galaxy credentials for the target instance:
-
-```bash
-export GALAXY_URL="https://usegalaxy.org"
-export GALAXY_API_KEY="your-galaxy-api-key"
-```
-
-Verify configuration:
-
-```bash
-galaxy-cli config test
-```
-
-Histories are private unless the user explicitly asks to make them public or importable. Publishing an entry to the public workflow website counts as an explicit request: the Galaxy history should be public and importable before the website entry is marked public. Final responses and reports must still include the Galaxy history link whenever a history can be resolved.
-
-### Step 6: Configure Optional `bioartifact` Validation
-
-Use `bioartifact` for deterministic local validation after Galaxy outputs are downloaded.
-
-Preferred installation depends on where `bioartifact` is published in your environment. For local development from a sibling checkout, install it into the repo-local venv:
-
-```bash
-.venv/bin/python -m pip install -e ../bioartifact
-.venv/bin/bioartifact --help
-.venv/bin/python -m bioartifact --help
-```
-
-Use `PYTHONPATH=/path/to/bioartifact/src` only as a temporary fallback when an editable install is not possible.
-
-`bioartifact` does not replace Galaxy job-state validation. Use it together with Galaxy metadata, output inventory, and task-specific checks.
-
-### Step 7: Verify the Plugin Behavior
-
-The harness ships slash-command markdown files under `plugins/galaxy-analysis-plugin/commands/`.
-
-Start with a command that does not require a live Galaxy connection:
-
-```text
-/galaxy-list
-```
-
-If your host namespaces commands, use the command entry that resolves to `galaxy-list`. If your host does not expose plugin commands in autocomplete, use the manual fallback section below; the same command text is still routed by the `galaxy-analysis` skill.
-
-Then test the planning path:
+Reproduce an analysis from a repository:
 
 ```text
 /galaxy-reproduce https://github.com/hbctraining/Intro-to-DGE
-
-Focus on reproducing the count-matrix differential expression workflow in Galaxy.
-Use data/raw_counts_mouseKO.csv and data/Mov10_full_meta.txt if appropriate.
-Start by inspecting the repo, inferring the workflow, and writing a Galaxy reproduction plan before execution.
 ```
 
-If `galaxy-cli` is available and configured, the agent can continue into execution. If it is not available, it should stop at the planning boundary and report the missing execution capability.
-
-For a live smoke test with a public example repository:
-
-```text
-Use the galaxy-analysis plugin.
-Run /galaxy-reproduce https://github.com/hbctraining/Intro-to-DGE.
-Focus on the count-matrix differential-expression workflow.
-Create a fresh Galaxy history, run Galaxy tools if possible, and return the Galaxy history link.
-```
-
-## Static Workflow Website
-
-`/galaxy-upload-workflow` publishes or stages reproduced histories for a small static website. The site is history-first: a Galaxy history link and metadata are enough for a draft entry; `workflow.ga`, `workflow.svg`, and thumbnails are optional improvements.
-
-Workflow entries live under:
-
-```text
-workflows/<entry_id>/
-  metadata.yaml
-  README.md
-  validation_report.json
-  provenance.json
-  workflow.ga
-  workflow.svg
-  thumbnail.png
-```
-
-Generate machine-readable site data and GitHub Pages-compatible HTML:
-
-```bash
-python3 plugins/galaxy-analysis-plugin/scripts/generate_workflow_site.py
-```
-
-Validate workflow entries before publishing or submitting:
-
-```bash
-python3 plugins/galaxy-analysis-plugin/scripts/validate_workflow_package.py
-```
-
-Validate slash-command prompt contracts:
-
-```bash
-python3 plugins/galaxy-analysis-plugin/scripts/check_command_contracts.py
-```
-
-Check that committed `site/` and `docs/` outputs still match `workflows/` metadata:
-
-```bash
-python3 plugins/galaxy-analysis-plugin/scripts/check_site_consistency.py
-```
-
-For a strict review package that must include `workflow.ga`, `workflow.svg`, and `thumbnail.png`:
-
-```bash
-python3 plugins/galaxy-analysis-plugin/scripts/validate_workflow_package.py \
-  --entry workflows/<entry_id> \
-  --strict-package
-```
-
-Create a draft website entry from a reproduced GitHub-to-Galaxy run:
-
-```bash
-python3 plugins/galaxy-analysis-plugin/scripts/create_workflow_entry.py \
-  --title "Intro to DGE reproduction" \
-  --source-url "https://github.com/hbctraining/Intro-to-DGE" \
-  --galaxy-history-url "https://usegalaxy.org/histories/..." \
-  --summary "Draft reproduction of the count-matrix differential expression workflow." \
-  --validation-status draft \
-  --tag rnaseq \
-  --tag differential-expression
-```
-
-This creates `workflows/<entry_id>/`, keeps the history private unless `--public` is supplied, and regenerates `site/` plus `docs/`. For public website entries, first make and verify the Galaxy history public/importable, then pass `--public --importable` so the metadata matches the real Galaxy state.
-
-Generated outputs:
-
-```text
-site/index.json
-site/tags.json
-site/validation_profiles.json
-site/build_report.json
-docs/index.html
-docs/styles.css
-docs/workflows/<slug>/index.html
-```
-
-To host the website on GitHub Pages after the repository is public:
-
-1. Push the generated `docs/` directory to `main`.
-2. In GitHub, open Settings -> Pages.
-3. Set Source to `Deploy from a branch`.
-4. Select branch `main` and folder `/docs`.
-5. Save and wait for GitHub Pages to publish the site.
-
-The committed `docs/.nojekyll` file keeps GitHub Pages from applying Jekyll processing.
-
-Current public site:
-
-```text
-https://qchiujunhao.github.io/galaxy-agent-harness/
-```
-
-## Manual Agent Fallback
-
-If native plugin, skill, or command discovery is not available in your agent host, you can still test the method layer from this repository by asking the agent to use the skill file directly:
-
-```text
-Use the Galaxy Agent Harness in plugins/galaxy-analysis-plugin.
-Follow plugins/galaxy-analysis-plugin/skills/galaxy-analysis/SKILL.md.
-Run /galaxy-list.
-```
-
-This does not install a host-native adapter, but it exercises the same harness, slash-command docs, guides, and templates.
-
-## Commands
-
-All v1 commands are implemented as Markdown command prompts with frontmatter and `$ARGUMENTS` handling. Codex can discover them through the plugin adapter; Claude Code, OpenCode, and other agents can use wrapper commands that point to these files.
-
-### `/galaxy-analyze`
-
-Analyze user-provided datasets in Galaxy.
-
-Example:
+Analyze provided datasets:
 
 ```text
 /galaxy-analyze these paired-end FASTQs with standard QC and trimming
 ```
 
-### `/galaxy-reproduce`
-
-Reproduce an analysis from a repository, benchmark item, methods section, or workflow description.
-
-Example:
+Explain a Galaxy history or failure:
 
 ```text
-/galaxy-reproduce https://github.com/hbctraining/Intro-to-DGE in Galaxy
+/galaxy-explain history <history-id-or-url>
 ```
 
-### `/galaxy-explain`
-
-Explain a Galaxy history, job, output, or failure.
-
-Example:
+Validate a completed run or package:
 
 ```text
-/galaxy-explain history 123abc and identify the failure boundary
+/galaxy-validate workflows/<entry-id>
 ```
 
-### `/galaxy-validate`
-
-Validate a completed run, output set, or workflow submission package.
-
-Example:
-
-```text
-/galaxy-validate ./workflows/wf_2026_0001
-```
-
-### `/galaxy-submit-workflow`
-
-Package a reproduced Galaxy workflow for review or publication.
-
-Example:
-
-```text
-/galaxy-submit-workflow the latest reproduced workflow as a draft package
-```
-
-### `/galaxy-upload-workflow`
-
-Publish or stage a reproduced Galaxy history/workflow entry for the static workflow website.
-
-Example:
+Publish or stage a reproduced history for the static workflow site:
 
 ```text
 /galaxy-upload-workflow the latest reproduced history as a draft website entry
 ```
 
-### `/galaxy-list`
+## Why This Exists
 
-List supported modes, general workflow support, validation profiles, templates, and local package capabilities.
+Galaxy work has a lot of operational detail: histories, datasets, collections, tool states, provenance, validation, and public sharing rules. Agents need a deterministic contract for that work.
 
-Example:
+This harness gives the agent that contract:
 
-```text
-/galaxy-list
-```
+- inspect before planning
+- map inputs and methods to Galaxy tools
+- execute through the pinned harness `galaxy-cli` when live Galaxy work is required
+- validate real outputs instead of assuming success
+- return Galaxy history links
+- record fallbacks and unresolved assumptions
+- produce reusable reports and website entries
 
-## What a Request Does
+## What Works Now
 
-For nontrivial tasks, the harness follows this phase model:
-
-1. Inspect the source, datasets, Galaxy history, or package.
-2. Infer task family, inputs, outputs, assumptions, and likely Galaxy mapping.
-3. Plan the run and validation checks.
-4. Execute through `galaxy-cli` when available.
-5. Validate real outputs or package files.
-6. Summarize artifacts, status, assumptions, and warnings.
+- Agent-readable harness, skill, commands, guides, and templates
+- Global installer for Claude Code, OpenCode, Codex, and generic agents
+- Optional Codex local plugin adapter
+- Seven `/galaxy-*` command prompts
+- General Galaxy workflow orchestration
+- Stronger validation profiles for common workflow families
+- Static workflow-site generator
+- Workflow entry/package validation
+- Live `galaxy-cli` acceptance evidence for a DESeq2 reproduction on usegalaxy.org
 
 ## Repository Layout
 
 ```text
 .
+  install.py
   .agents/plugins/marketplace.json
-  docs/
-  site/
+  plugins/galaxy-analysis-plugin/
+    .codex-plugin/plugin.json
+    HARNESS.md
+    commands/
+    guides/
+    skills/galaxy-analysis/SKILL.md
+    templates/
+    scripts/
   workflows/
-  plugins/
-    galaxy-analysis-plugin/
-      .codex-plugin/plugin.json
-      DESIGN.md
-      HARNESS.md
-      commands/
-      guides/
-      templates/
-      skills/galaxy-analysis/SKILL.md
-      scripts/check_structure.py
-      scripts/create_workflow_entry.py
-      scripts/generate_workflow_site.py
+  site/
+  docs/
 ```
 
-## Development
+## Development Checks
 
-Run checks after editing command docs, guides, templates, the manifest, or the marketplace entry:
+Run the core scaffold checks after editing command docs, guides, templates, the manifest, or installer:
 
 ```bash
+python3 -m py_compile install.py
 python3 -m json.tool .agents/plugins/marketplace.json >/dev/null
 python3 -m json.tool plugins/galaxy-analysis-plugin/.codex-plugin/plugin.json >/dev/null
 cd plugins/galaxy-analysis-plugin
 python3 scripts/check_structure.py
+python3 scripts/check_command_contracts.py
 ```
 
 Regenerate the static workflow site after editing `workflows/*/metadata.yaml`:
@@ -455,129 +277,37 @@ Regenerate the static workflow site after editing `workflows/*/metadata.yaml`:
 python3 plugins/galaxy-analysis-plugin/scripts/generate_workflow_site.py
 ```
 
+Validate workflow entries:
+
+```bash
+python3 plugins/galaxy-analysis-plugin/scripts/validate_workflow_package.py
+```
+
 ## Troubleshooting
 
-### Plugin is not visible in Codex
-
-Check that the marketplace entry exists and points to the plugin directory:
+If commands do not appear, restart or reload the agent, then run:
 
 ```bash
-cat .agents/plugins/marketplace.json
-ls plugins/galaxy-analysis-plugin/.codex-plugin/plugin.json
+python3 install.py --force
 ```
 
-Then reload or restart the Codex session.
+If live Galaxy execution does not run, install and configure `galaxy-cli`:
 
-If a CLI session logs a warning like this:
+```bash
+python3 install.py
+python3 install.py --configure-galaxy --instance default
+. "$HOME/.agents/galaxy-analysis/env"
+$HOME/.agents/galaxy-analysis/.venv/bin/galaxy-cli config test
+```
+
+If your host cannot load skills or commands, use the generic bootstrap file:
 
 ```text
-failed to load plugin: missing or invalid plugin.json ... galaxy-analysis-plugin/templates
+.agents/galaxy-agent-harness.md
 ```
 
-the local plugin cache is one level too shallow. Rebuild the local cache with a version directory:
+Tell the agent to read that file before handling Galaxy tasks.
 
-```bash
-cache_root="$HOME/.codex/plugins/cache/galaxy-agent-harness"
-plugin_cache="$cache_root/galaxy-analysis-plugin"
-backup="$cache_root/galaxy-analysis-plugin.backup.$(date +%Y%m%d%H%M%S)"
+## License
 
-mkdir -p "$cache_root"
-if [ -d "$plugin_cache" ]; then
-  mv "$plugin_cache" "$backup"
-fi
-
-mkdir -p "$plugin_cache/0.1.0"
-rsync -a --exclude '__pycache__' \
-  plugins/galaxy-analysis-plugin/ \
-  "$plugin_cache/0.1.0/"
-```
-
-Then restart the Codex session and rerun the plugin visibility check.
-
-### `/galaxy-*` commands do not appear in autocomplete
-
-Verify that the plugin is installed or enabled, then restart the Codex session. The command files live in:
-
-```text
-plugins/galaxy-analysis-plugin/commands/
-```
-
-Some hosts namespace plugin commands or do not expose plugin `commands/` yet. In that case, use the manual fallback prompt from this README; the `galaxy-analysis` skill still routes `/galaxy-*` text to the same command contracts.
-
-### Galaxy execution does not run
-
-This harness does not include a Galaxy backend. Install `galaxy-cli`, configure Galaxy credentials, then rerun the request.
-
-If `galaxy-cli` is missing:
-
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-python -m pip install -r requirements.txt
-python -m pip install galaxy-cli
-```
-
-If a source checkout fails with `ModuleNotFoundError: No module named 'click'`, install the checkout's Python dependencies or install the package in editable mode from the correct project directory:
-
-```bash
-python3 -m pip install -e /path/to/cli-galaxy/galaxy-src/agent-harness
-```
-
-If credentials are missing, set `GALAXY_URL` and `GALAXY_API_KEY`, then run:
-
-```bash
-galaxy-cli config test
-```
-
-If uploads to usegalaxy.org fail with this error:
-
-```text
-Parameter 'space_to_tab': an invalid option ('No') was selected
-```
-
-you are likely using `galaxy-cli` 1.0.2 against a Galaxy server that now requires different upload form values. Until a fixed `galaxy-cli` release is installed, a temporary repo-local workaround is to patch only the installed package inside `.venv`:
-
-```bash
-python - <<'PY'
-from pathlib import Path
-target = next(Path(".venv").glob("lib/python*/site-packages/galaxy_cli/utils/galaxy_backend.py"))
-text = target.read_text()
-text = text.replace('"files_0|space_to_tab": "No"', '"files_0|space_to_tab": "Yes"')
-text = text.replace('"files_0|to_posix_lines": "No"', '"files_0|to_posix_lines": "Yes"')
-target.write_text(text)
-print(target)
-PY
-```
-
-This modifies only the ignored local venv. Do not commit `.venv/`.
-
-### `bioartifact` is unavailable
-
-Install `bioartifact` into the repo-local venv before local artifact validation. If using a sibling source checkout:
-
-```bash
-.venv/bin/python -m pip install -e ../bioartifact
-.venv/bin/bioartifact --help
-.venv/bin/python -m bioartifact --help
-```
-
-If an editable install is not possible, temporarily expose the source checkout with `PYTHONPATH=/path/to/bioartifact/src`.
-
-### Validation fails
-
-Run the scaffold check:
-
-```bash
-cd plugins/galaxy-analysis-plugin
-python3 scripts/check_structure.py
-python3 scripts/check_command_contracts.py
-```
-
-If a workflow package fails validation, inspect the missing files listed by the validation report. A publishable package generally needs `workflow.ga`, `workflow.svg` or image fallback, `metadata.yaml`, `README.md`, and recorded validation status.
-
-## Next Steps
-
-1. Add a workflow package generator for `workflow.ga`, `workflow.svg`, thumbnails, and richer provenance.
-2. Test all slash commands in fresh Codex, Claude Code, and OpenCode sessions.
-3. Add more reproduced workflows beyond the DESeq2 acceptance run.
-4. Publish the repository and enable GitHub Pages from `/docs`.
+MIT
